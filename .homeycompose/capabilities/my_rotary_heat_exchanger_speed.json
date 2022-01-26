@@ -1,0 +1,26 @@
+{
+	  "type": "number",
+	  "title": { "en": "Rotary heat exchanger speed" },
+	  "tokens": [
+    {
+      "name": "value",
+      "title": {
+        "en": "%",
+        "no": "%"
+      },
+      "example": {
+        "en": 42,
+        "no": 42
+      }
+    }
+  ],
+	  "uiComponent": "sensor",
+	  "getable": true,
+	  "setable": false,
+	  "units": { "en": " %" },
+	  "min": 0,
+	  "max": 100,
+	  "step": 1,
+	  "insights": true,
+	  "icon": "/assets/icon.svg"
+}

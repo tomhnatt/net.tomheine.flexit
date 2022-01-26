@@ -1,0 +1,13 @@
+{
+	  "type": "number",
+	  "title": { "en": "Rapid ventilation runtime" },
+	  "uiComponent": "sensor",
+	  "getable": true,
+	  "setable": false,
+	  "units": { "en": " min" },
+	  "min": 0,
+	  "max": 360,
+	  "step": 1,
+	  "insights": true,
+	  "icon": "/assets/exhaust.svg"
+}

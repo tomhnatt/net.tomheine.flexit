@@ -1,0 +1,12 @@
+{
+	  "type": "number",
+	  "title": { "en": "Outside air temperature" },
+	  "uiComponent": "sensor",
+	  "getable": true,
+	  "setable": false,
+	  "units": { "en": "C" },
+	  "min": -50,
+	  "max":  80,
+	  "insights": true,
+	  "icon": "/assets/outside.svg"
+}

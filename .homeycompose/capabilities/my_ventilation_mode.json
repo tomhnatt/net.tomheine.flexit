@@ -1,0 +1,59 @@
+{
+	  "type": "enum",
+	  "title": { "en": "Heat recovery ventilation state" },
+	  "values": [
+		{
+			"id": "unknown",
+			"title": {
+			"en": "Unknown"
+			}
+		},
+		{
+			"id": "off",
+			"title": {
+			"en": "Off"
+			}
+		},
+		{
+			"id": "away",
+			"title": {
+				"en": "Away"
+			}
+		},
+		{
+			"id": "home",
+			"title": {
+				"en": "Home"
+			}
+		},
+		{
+			"id": "high",
+			"title": {
+				"en": "High"
+			}
+		},
+		{
+			"id": "fume_hood",
+			"title": {
+				"en": "Fume hood"
+			}
+		},
+		{
+			"id": "fireplace",
+			"title": {
+				"en": "Fireplace"
+			}
+		},
+		{
+			"id": "temporary_high",
+			"title": {
+				"en": "Temporary High"
+			}
+		}
+	   ],
+	  "uiComponent": "picker",
+	  "getable": true,
+	  "setable": true,
+	  "uiQuickAction": true
+	
+}

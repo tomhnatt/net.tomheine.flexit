@@ -1,0 +1,28 @@
+{
+  "name": {
+    "en": "Flexit Aggregat"
+  },
+  "class": "other",
+  "capabilities": ["my_supply_air_fan_speed","my_exhaust_air_fan_speed","my_exhaust_air_temperature","my_extract_air_temperature","my_room_temperature","my_outside_air_temperature","my_ventilation_mode","my_setpoint_home_temperature","my_setpoint_away_temperature","my_supply_air_fan_speed_feedback","my_exhaust_air_fan_speed_feedback","my_rotary_heat_exchanger_speed","my_filter_replacement"],
+  "platforms": ["local"],
+  "connectivity": ["lan"],
+  "pair": [
+    {
+      "id": "list_my_devices",
+      
+      "template": "list_devices",
+
+      "navigation": { "next": "add_my_devices" }
+    },
+    {
+      "id": "add_my_devices",
+     
+      "template": "add_devices"
+    }
+  ],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png",
+    "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
+  }
+}

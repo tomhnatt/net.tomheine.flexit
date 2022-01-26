@@ -1,0 +1,130 @@
+{
+	
+	
+  "triggers": [
+  
+  
+  {
+	  
+   "id": "ventilation_mode_changed",  
+  "title": {
+    "en": "Ventilation mode change"
+  },
+   "tokens": [
+    {
+      "name": "new_mode",
+      "type": "string",
+      "title": { "en": "New mode" },
+      "example": "home"
+    }
+	],
+  "hint": {
+    "en": "When ventilation mode changes"
+  }
+}
+   
+  
+  ],	
+	
+	
+	
+  "actions": [
+  
+  
+    {
+		
+	"id": "start_temporary_high",
+  "title": { "en": "Start temporary high"},
+  "titleFormatted": { "en": "Run temporary high for [[duration]] minutes" },
+  
+  "args": [
+    {
+      "name": "duration",
+      "type": "number",
+	  "title": {"en":"Duration"},
+	  "min": 1,
+	  "max": 360,
+	  "placeholder": { "en": "In minutes" }
+    }
+  ]
+},
+
+
+{
+	"id": "start_temporary_fireplace",
+  "title": {"en": "Start temporary fireplace" },
+  "titleFormatted": { "en": "Run temporary fireplace for [[duration]] minutes" },
+  
+  "args": [
+    {
+      "name": "duration",
+      "type": "number",
+	  "title": {"en":"Duration"},
+	  "min": 1,
+	  "max": 360,
+	  "placeholder": { "en": "In minutes" }
+    }
+  ]
+},
+
+
+
+
+{
+		
+	"id": "change_mode",
+  "title": { "en": "Change ventilation mode"},
+  "titleFormatted": { "en": "Activate [[ventilation_mode]] mode" },
+  "args": [
+    {
+      "name": "ventilation_mode",
+      "type": "dropdown",
+	  "title": {"en":"Mode"},
+	  "values": [
+        { "id": "away", "label": { "en": "away" } },
+        { "id": "home", "label": { "en": "home" } },
+        { "id": "high", "label": { "en": "high" } }
+      ]
+    }
+  ]
+},
+
+{
+	"id": "change_setpoint_home",
+  "title": {"en": "Change setpoint home" },
+  "titleFormatted": { "en": "Change setpoint home to [[temperature]] degree celsius" },
+  
+  "args": [
+    {
+      "name": "temperature",
+      "type": "number",
+	  "title": {"en":"Temperature"},
+	  "min": 10,
+	  "max": 30,
+	  "step": 0.5,
+	  "placeholder": { "en": "In degree celsius" }
+    }
+  ]
+},
+
+{
+	"id": "change_setpoint_away",
+  "title": {"en": "Change setpoint away" },
+  "titleFormatted": { "en": "Change setpoint away to [[temperature]] degree celsius" },
+  
+  "args": [
+    {
+      "name": "temperature",
+      "type": "number",
+	  "title": {"en":"Temperature"},
+	  "min": 10,
+	  "max": 30,
+	  "step": 0.5,
+	  "placeholder": { "en": "In degree celsius" }
+    }
+  ]
+}
+
+
+  ]
+}

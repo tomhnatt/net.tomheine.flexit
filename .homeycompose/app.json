@@ -1,0 +1,28 @@
+{
+  "id": "net.tomheine.flexit",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Flexit Nordic S4"
+  },
+  "description": {
+    "en": "Adds support for Flexit devices."
+  },
+  "category": [
+    "climate"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Tom Heine Nätt",
+    "email": "homey@tomheine.net"
+  }
+}

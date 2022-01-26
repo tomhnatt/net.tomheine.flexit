@@ -1,0 +1,12 @@
+{
+	  "type": "number",
+	  "title": { "en": "Operating time for filter replacement" },
+	  "uiComponent": "sensor",
+	  "getable": true,
+	  "setable": true,
+	  "units": { "en": " timer" },
+	  "min": 0,
+	  "max":  99990,
+	  "insights": true,
+	  "icon": "/assets/airfilter.svg"
+}

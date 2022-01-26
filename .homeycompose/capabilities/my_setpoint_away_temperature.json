@@ -1,0 +1,13 @@
+{
+	  "type": "number",
+	  "title": { "en": "Setpoint Away temperature" },
+	  "uiComponent": "sensor",
+	  "getable": true,
+	  "setable": true,
+	  "units": { "en": "C" },
+	  "min": 10,
+	  "max":  30,
+	  "decimals": 1,
+	  "insights": true,
+	  "icon": "/assets/temp.svg"
+}

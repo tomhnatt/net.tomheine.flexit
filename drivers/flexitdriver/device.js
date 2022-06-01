@@ -6,7 +6,7 @@ const Modbus = require('jsmodbus')
 	const socket = new net.Socket()
 	const client = new Modbus.client.TCP(socket, 1)
 	const options = {
-	'host' : "10.0.0.95",
+	'host' : "192.168.0.95",
 	'port' : 8234
 	} 
 	

@@ -1,3 +1,3 @@
 # Flexit Nordic S4
 
-Adds support for MyBrand devices.
+Versjon med noen bugs og mangler. Vil videreutviklers mer når jeg får tid.

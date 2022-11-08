@@ -6,8 +6,8 @@ const Modbus = require('jsmodbus')
 	const socket = new net.Socket()
 	const client = new Modbus.client.TCP(socket, 1)
 	const options = {
-	'host' : "10.0.0.95",
-	'port' : 8234
+	'host' : "10.0.0.95",  //TODO: Do not use hardcoded IP
+	'port' : 8234 //TODO: Do not use hardcoded IP
 	} 
 
 class MyApp extends Homey.App {

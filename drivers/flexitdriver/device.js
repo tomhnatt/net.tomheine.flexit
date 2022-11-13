@@ -65,6 +65,10 @@ const SETPOINT_HOME_SUPPLY_FAN = [1013, 2, 'Setpoint Home Supply Fan', 'SETPOINT
 const SETPOINT_HOME_EXTRACT_FAN = [1015, 2, 'Setpoint Home Extract Fan', 'SETPOINT_HOME_EXTRACT_FAN'];
 const SETPOINT_HIGH_SUPPLY_FAN = [1005, 2, 'Setpoint High Supply Fan', 'SETPOINT_HIGH_SUPPLY_FAN'];
 const SETPOINT_HIGH_EXTRACT_FAN = [1007, 2, 'Setpoint High Extract Fan', 'SETPOINT_HIGH_EXTRACT_FAN'];
+const SETPOINT_COOKER_HOOD_SUPPLY_FAN = [1037, 2, 'Setpoint Cooker hood Supply Fan', 'SETPOINT_COOKER_HOOD_SUPPLY_FAN'];
+const SETPOINT_COOKER_HOOD_EXTRACT_FAN = [1039, 2, 'Setpoint Cooker hood Extract Fan', 'SETPOINT_COOKER_HOOD_EXTRACT_FAN'];
+const SETPOINT_FIREPLACE_SUPPLY_FAN = [1029, 2, 'Setpoint Fireplace Supply Fan', 'SETPOINT_FIREPLACE_SUPPLY_FAN'];
+const SETPOINT_FIREPLACE_EXTRACT_FAN = [1031, 2, 'Setpoint Fireplace Extract Fan', 'SETPOINT_FIREPLACE_EXTRACT_FAN'];
 
 /// ////////
 
@@ -97,6 +101,12 @@ const SETPOINT_HOME_SUPPLY_FAN_KEY = 'SETPOINT_HOME_SUPPLY_FAN';
 const SETPOINT_HOME_EXTRACT_FAN_KEY = 'SETPOINT_HOME_EXTRACT_FAN';
 const SETPOINT_HIGH_SUPPLY_FAN_KEY = 'SETPOINT_HIGH_SUPPLY_FAN';
 const SETPOINT_HIGH_EXTRACT_FAN_KEY = 'SETPOINT_HIGH_EXTRACT_FAN';
+const SETPOINT_COOKER_HOOD_SUPPLY_FAN_KEY = 'SETPOINT_COOKER_HOOD_SUPPLY_FAN';
+const SETPOINT_COOKER_HOOD_EXTRACT_FAN_KEY = 'SETPOINT_COOKER_HOOD_EXTRACT_FAN';
+const SETPOINT_FIREPLACE_SUPPLY_FAN_KEY = 'SETPOINT_FIREPLACE_SUPPLY_FAN';
+const SETPOINT_FIREPLACE_EXTRACT_FAN_KEY = 'SETPOINT_FIREPLACE_EXTRACT_FAN';
+
+
 
 class MyDevice extends Device {
 
@@ -309,6 +319,10 @@ class MyDevice extends Device {
     this.setCapabilityValue('fan_setpoint_extract_home', this.registerValues['SETPOINT_HOME_EXTRACT_FAN']);
     this.setCapabilityValue('fan_setpoint_supply_high', this.registerValues['SETPOINT_HIGH_SUPPLY_FAN']);
     this.setCapabilityValue('fan_setpoint_extract_high', this.registerValues['SETPOINT_HIGH_EXTRACT_FAN']);
+    this.setCapabilityValue('fan_setpoint_supply_cooker_hood', this.registerValues['SETPOINT_COOKER_HOOD_SUPPLY_FAN']);
+    this.setCapabilityValue('fan_setpoint_extract_cooker_hood', this.registerValues['SETPOINT_COOKER_HOOD_EXTRACT_FAN']);
+    this.setCapabilityValue('fan_setpoint_supply_fireplace', this.registerValues['SETPOINT_FIREPLACE_SUPPLY_FAN']);
+    this.setCapabilityValue('fan_setpoint_extract_fireplace', this.registerValues['SETPOINT_FIREPLACE_EXTRACT_FAN']);
 
     // console.log(this.registerValues["SETPOINT_AWAY_SUPPLY_FAN"]+" "+this.registerValues["SETPOINT_AWAY_EXTRACT_FAN"]);
     // console.log(this.registerValues["SETPOINT_HOME_SUPPLY_FAN"]+" "+this.registerValues["SETPOINT_HOME_EXTRACT_FAN"]);
@@ -331,7 +345,11 @@ class MyDevice extends Device {
 			 this.readHoldingFlexit(SETPOINT_HOME_EXTRACT_FAN, this.toFloat1);
 			 this.readHoldingFlexit(SETPOINT_HIGH_SUPPLY_FAN, this.toFloat1);
 			 this.readHoldingFlexit(SETPOINT_HIGH_EXTRACT_FAN, this.toFloat1);
-		 }
+       this.readHoldingFlexit(SETPOINT_COOKER_HOOD_SUPPLY_FAN, this.toFloat1);
+			 this.readHoldingFlexit(SETPOINT_COOKER_HOOD_EXTRACT_FAN, this.toFloat1);
+			 this.readHoldingFlexit(SETPOINT_FIREPLACE_SUPPLY_FAN, this.toFloat1);
+			 this.readHoldingFlexit(SETPOINT_FIREPLACE_EXTRACT_FAN, this.toFloat1); 
+     }
 
 		 // if(requestId % 10 == 0) //every 10-time
 		 {
@@ -395,6 +413,10 @@ class MyDevice extends Device {
 		  SETPOINT_HOME_EXTRACT_FAN: 30,
 		  SETPOINT_HIGH_SUPPLY_FAN: 30,
 		  SETPOINT_HIGH_EXTRACT_FAN: 30,
+      SETPOINT_COOKER_HOOD_SUPPLY_FAN: 30,
+		  SETPOINT_COOKER_HOOD_EXTRACT_FAN: 30,
+      SETPOINT_FIREPLACE_SUPPLY_FAN: 30,
+		  SETPOINT_FIREPLACE_EXTRACT_FAN: 30
 
     };
 
@@ -498,6 +520,18 @@ class MyDevice extends Device {
     changeSetpointFanHighAction.registerRunListener(async (args, state) => {
       device.log(`Flow: setpoint high fan speeds changed: Supply:${args.fan1} Extract:${args.fan2}`);
 	   device.changeSetpointFanFlexit(SETPOINT_HIGH_SUPPLY_FAN, SETPOINT_HIGH_EXTRACT_FAN, args.fan1, args.fan2);
+    });
+
+    const changeSetpointFanCookerHoodAction = this.homey.flow.getActionCard('change_setpoint_fan_cooker_hood');
+    changeSetpointFanCookerHoodAction.registerRunListener(async (args, state) => {
+      device.log(`Flow: setpoint cooker hood fan speeds changed: Supply:${args.fan1} Extract:${args.fan2}`);
+	   device.changeSetpointFanFlexit(SETPOINT_COOKER_HOOD_SUPPLY_FAN, SETPOINT_COOKER_HOOD_EXTRACT_FAN, args.fan1, args.fan2);
+    });
+
+    const changeSetpointFanFirpelaceAction = this.homey.flow.getActionCard('change_setpoint_fan_fireplace');
+    changeSetpointFanFirpelaceAction.registerRunListener(async (args, state) => {
+      device.log(`Flow: setpoint fireplace fan speeds changed: Supply:${args.fan1} Extract:${args.fan2}`);
+	   device.changeSetpointFanFlexit(SETPOINT_FIREPLACE_SUPPLY_FAN, SETPOINT_FIREPLACE_EXTRACT_FAN, args.fan1, args.fan2);
     });
 
     this._ventilationModeChanged = this.homey.flow.getDeviceTriggerCard('ventilation_mode_changed');

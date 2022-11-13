@@ -338,6 +338,90 @@
             }
           }
         ]
+      },
+      {
+        "id": "change_setpoint_fan_cooker_hood",
+        "title": {
+          "en": "Change setpoint fan speeds COOKER HOOD"
+        },
+        "titleFormatted": {
+          "en": "Change setpoint fan speeds cooker hood to supply [[fan1]] % and exhaust [[fan2]] %"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=flexitdriver"
+          },
+          {
+            "name": "fan1",
+            "type": "number",
+            "title": {
+              "en": "Supply fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          },
+          {
+            "name": "fan2",
+            "type": "number",
+            "title": {
+              "en": "Extract fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          }
+        ]
+      },
+      {
+        "id": "change_setpoint_fan_fireplace",
+        "title": {
+          "en": "Change setpoint fan speeds FIREPLACE"
+        },
+        "titleFormatted": {
+          "en": "Change setpoint fan speeds fireplace to supply [[fan1]] % and exhaust [[fan2]] %"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=flexitdriver"
+          },
+          {
+            "name": "fan1",
+            "type": "number",
+            "title": {
+              "en": "Supply fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          },
+          {
+            "name": "fan2",
+            "type": "number",
+            "title": {
+              "en": "Extract fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          }
+        ]
       }
     ]
   },
@@ -367,7 +451,11 @@
         "fan_setpoint_supply_home",
         "fan_setpoint_extract_home",
         "fan_setpoint_supply_high",
-        "fan_setpoint_extract_high"
+        "fan_setpoint_extract_high",
+        "fan_setpoint_supply_cooker_hood",
+        "fan_setpoint_extract_cooker_hood",
+        "fan_setpoint_supply_fireplace",
+        "fan_setpoint_extract_fireplace"
       ],
       "platforms": [
         "local"
@@ -434,10 +522,61 @@
     }
   ],
   "capabilities": {
+    "away_supply_fan_setpoint": {
+      "type": "number",
+      "title": {
+        "en": "Supply air fan speed"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/supply.svg"
+    },
     "fan_setpoint_extract_away": {
       "type": "number",
       "title": {
         "en": "Away, extract fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/extract.svg"
+    },
+    "fan_setpoint_extract_cooker_hood": {
+      "type": "number",
+      "title": {
+        "en": "Cooker hood, extract fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/extract.svg"
+    },
+    "fan_setpoint_extract_fireplace": {
+      "type": "number",
+      "title": {
+        "en": "Fireplace, extract fan setpoint"
       },
       "uiComponent": "sensor",
       "getable": true,
@@ -502,6 +641,40 @@
       "insights": true,
       "icon": "/assets/supply.svg"
     },
+    "fan_setpoint_supply_cooker_hood": {
+      "type": "number",
+      "title": {
+        "en": "Cooker hood, supply fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/supply.svg"
+    },
+    "fan_setpoint_supply_fireplace": {
+      "type": "number",
+      "title": {
+        "en": "Fireplace, supply fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/supply.svg"
+    },
     "fan_setpoint_supply_high": {
       "type": "number",
       "title": {
@@ -523,6 +696,23 @@
       "type": "number",
       "title": {
         "en": "Home, supply fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/supply.svg"
+    },
+    "fan_setpoint_suppy_away": {
+      "type": "number",
+      "title": {
+        "en": "Away, supply fan setpoint"
       },
       "uiComponent": "sensor",
       "getable": true,

@@ -1,6 +1,6 @@
 {
 	  "type": "number",
-	  "title": { "en": "Away, supply fan setpoint" },
+	  "title": { "en": "Cooker hood, supply fan setpoint" },
 	  "uiComponent": "sensor",
 	  "getable": true,
 	  "setable": false,

@@ -1,6 +1,6 @@
 {
 	  "type": "number",
-	  "title": { "en": "High, supply fan setpoint" },
+	  "title": { "en": "Fireplace, extract fan setpoint" },
 	  "uiComponent": "sensor",
 	  "getable": true,
 	  "setable": false,
@@ -9,5 +9,5 @@
 	  "max": 100,
 	  "step": 1,
 	  "insights": true,
-	  "icon": "/assets/supply.svg"
+	  "icon": "/assets/extract.svg"
 }

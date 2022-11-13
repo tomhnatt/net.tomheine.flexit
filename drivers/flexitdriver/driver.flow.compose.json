@@ -206,7 +206,63 @@
 	  "placeholder": { "en": "In percent" }
     }
   ]
+},
+
+{
+	"id": "change_setpoint_fan_cooker_hood",
+  "title": {"en": "Change setpoint fan speeds COOKER HOOD" },
+  "titleFormatted": { "en": "Change setpoint fan speeds cooker hood to supply [[fan1]] % and exhaust [[fan2]] %" },
+  
+  "args": [
+    {
+    "name": "fan1",
+    "type": "number",
+	  "title": {"en":"Supply fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    },
+    {
+    "name": "fan2",
+    "type": "number",
+	  "title": {"en":"Extract fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    }
+  ]
+},
+
+{
+	"id": "change_setpoint_fan_fireplace",
+  "title": {"en": "Change setpoint fan speeds FIREPLACE" },
+  "titleFormatted": { "en": "Change setpoint fan speeds fireplace to supply [[fan1]] % and exhaust [[fan2]] %" },
+  
+  "args": [
+    {
+    "name": "fan1",
+    "type": "number",
+	  "title": {"en":"Supply fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    },
+    {
+    "name": "fan2",
+    "type": "number",
+	  "title": {"en":"Extract fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    }
+  ]
 }
+
+
 
 
 

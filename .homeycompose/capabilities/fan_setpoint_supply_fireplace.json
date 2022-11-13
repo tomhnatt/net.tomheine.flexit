@@ -1,6 +1,6 @@
 {
 	  "type": "number",
-	  "title": { "en": "Home, supply fan setpoint" },
+	  "title": { "en": "Fireplace, supply fan setpoint" },
 	  "uiComponent": "sensor",
 	  "getable": true,
 	  "setable": false,

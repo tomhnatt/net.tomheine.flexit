@@ -14,8 +14,8 @@ const net = require('net');
 const socket = new net.Socket();
 const client = new Modbus.client.TCP(socket, 1);
 const options = {
-  host: '192.168.0.95',
-  port: 8234,
+  host: '192.168.0.95',  //TODO: Fikse at det ikke er fast IP
+  port: 8234,  //TODO: Fikse at det ikke er fast port
 };
 
 let requestId = 0;

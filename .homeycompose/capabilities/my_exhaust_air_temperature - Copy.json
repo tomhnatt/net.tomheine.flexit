@@ -1,6 +1,6 @@
 {
 	  "type": "number",
-	  "title": { "en": "Room temperature" },
+	  "title": { "en": "Exhaust air temperature" },
 	  "uiComponent": "sensor",
 	  "getable": true,
 	  "setable": false,
@@ -8,5 +8,5 @@
 	  "min": -50,
 	  "max":  80,
 	  "insights": true,
-	  "icon": "/assets/room.svg"
+	  "icon": "/assets/exhaust.svg"
 }

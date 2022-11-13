@@ -1,6 +1,6 @@
 {
 	  "type": "number",
-	  "title": { "en": "Room temperature" },
+	  "title": { "en": "Test temperature" },
 	  "uiComponent": "sensor",
 	  "getable": true,
 	  "setable": false,

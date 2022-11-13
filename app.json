@@ -158,7 +158,7 @@
       {
         "id": "change_setpoint_home",
         "title": {
-          "en": "Change setpoint home"
+          "en": "Change setpoint temperature home"
         },
         "titleFormatted": {
           "en": "Change setpoint home to [[temperature]] degree celsius"
@@ -187,7 +187,7 @@
       {
         "id": "change_setpoint_away",
         "title": {
-          "en": "Change setpoint away"
+          "en": "Change setpoint temperature away"
         },
         "titleFormatted": {
           "en": "Change setpoint away to [[temperature]] degree celsius"
@@ -212,6 +212,132 @@
             }
           }
         ]
+      },
+      {
+        "id": "change_setpoint_fan_away",
+        "title": {
+          "en": "Change setpoint fan speeds AWAY"
+        },
+        "titleFormatted": {
+          "en": "Change setpoint fan speeds away to supply [[fan1]] % and exhaust [[fan2]] %"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=flexitdriver"
+          },
+          {
+            "name": "fan1",
+            "type": "number",
+            "title": {
+              "en": "Supply fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          },
+          {
+            "name": "fan2",
+            "type": "number",
+            "title": {
+              "en": "Extract fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          }
+        ]
+      },
+      {
+        "id": "change_setpoint_fan_home",
+        "title": {
+          "en": "Change setpoint fan speeds HOME"
+        },
+        "titleFormatted": {
+          "en": "Change setpoint fan speeds home to supply [[fan1]] % and exhaust [[fan2]] %"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=flexitdriver"
+          },
+          {
+            "name": "fan1",
+            "type": "number",
+            "title": {
+              "en": "Supply fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          },
+          {
+            "name": "fan2",
+            "type": "number",
+            "title": {
+              "en": "Extract fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          }
+        ]
+      },
+      {
+        "id": "change_setpoint_fan_high",
+        "title": {
+          "en": "Change setpoint fan speeds HIGH"
+        },
+        "titleFormatted": {
+          "en": "Change setpoint fan speeds high to supply [[fan1]] % and exhaust [[fan2]] %"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=flexitdriver"
+          },
+          {
+            "name": "fan1",
+            "type": "number",
+            "title": {
+              "en": "Supply fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          },
+          {
+            "name": "fan2",
+            "type": "number",
+            "title": {
+              "en": "Extract fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          }
+        ]
       }
     ]
   },
@@ -224,6 +350,7 @@
       "capabilities": [
         "my_supply_air_fan_speed",
         "my_exhaust_air_fan_speed",
+        "my_supply_air_temperature",
         "my_exhaust_air_temperature",
         "my_extract_air_temperature",
         "my_room_temperature",
@@ -234,7 +361,13 @@
         "my_supply_air_fan_speed_feedback",
         "my_exhaust_air_fan_speed_feedback",
         "my_rotary_heat_exchanger_speed",
-        "my_filter_replacement"
+        "my_filter_replacement",
+        "fan_setpoint_supply_away",
+        "fan_setpoint_extract_away",
+        "fan_setpoint_supply_home",
+        "fan_setpoint_extract_home",
+        "fan_setpoint_supply_high",
+        "fan_setpoint_extract_high"
       ],
       "platforms": [
         "local"
@@ -301,6 +434,108 @@
     }
   ],
   "capabilities": {
+    "fan_setpoint_extract_away": {
+      "type": "number",
+      "title": {
+        "en": "Away, extract fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/extract.svg"
+    },
+    "fan_setpoint_extract_high": {
+      "type": "number",
+      "title": {
+        "en": "High, extract fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/extract.svg"
+    },
+    "fan_setpoint_extract_home": {
+      "type": "number",
+      "title": {
+        "en": "Home, extract fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/extract.svg"
+    },
+    "fan_setpoint_supply_away": {
+      "type": "number",
+      "title": {
+        "en": "Away, supply fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/supply.svg"
+    },
+    "fan_setpoint_supply_high": {
+      "type": "number",
+      "title": {
+        "en": "High, supply fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/supply.svg"
+    },
+    "fan_setpoint_supply_home": {
+      "type": "number",
+      "title": {
+        "en": "Home, supply fan setpoint"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": " %"
+      },
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/supply.svg"
+    },
     "my_exhaust_air_fan_speed": {
       "type": "number",
       "title": {
@@ -494,7 +729,7 @@
       "min": -50,
       "max": 80,
       "insights": true,
-      "icon": "/assets/supply.svg"
+      "icon": "/assets/room.svg"
     },
     "my_rotary_heat_exchanger_speed": {
       "type": "number",
@@ -593,6 +828,38 @@
       "step": 1,
       "insights": true,
       "icon": "/assets/supply.svg"
+    },
+    "my_supply_air_temperature": {
+      "type": "number",
+      "title": {
+        "en": "Supply air temperature"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "C"
+      },
+      "min": -50,
+      "max": 80,
+      "insights": true,
+      "icon": "/assets/supply.svg"
+    },
+    "my_test_temperature": {
+      "type": "number",
+      "title": {
+        "en": "Test temperature"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "C"
+      },
+      "min": -50,
+      "max": 80,
+      "insights": true,
+      "icon": "/assets/room.svg"
     },
     "my_trigger_fireplace": {
       "type": "boolean",

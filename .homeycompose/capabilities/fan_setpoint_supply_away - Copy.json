@@ -1,0 +1,13 @@
+{
+	  "type": "number",
+	  "title": { "en": "Away, supply fan setpoint" },
+	  "uiComponent": "sensor",
+	  "getable": true,
+	  "setable": false,
+	  "units": { "en": " %" },
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "insights": true,
+	  "icon": "/assets/supply.svg"
+}

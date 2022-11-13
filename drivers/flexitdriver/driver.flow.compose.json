@@ -91,7 +91,7 @@
 
 {
 	"id": "change_setpoint_home",
-  "title": {"en": "Change setpoint home" },
+  "title": {"en": "Change setpoint temperature home" },
   "titleFormatted": { "en": "Change setpoint home to [[temperature]] degree celsius" },
   
   "args": [
@@ -109,7 +109,7 @@
 
 {
 	"id": "change_setpoint_away",
-  "title": {"en": "Change setpoint away" },
+  "title": {"en": "Change setpoint temperature away" },
   "titleFormatted": { "en": "Change setpoint away to [[temperature]] degree celsius" },
   
   "args": [
@@ -123,7 +123,91 @@
 	  "placeholder": { "en": "In degree celsius" }
     }
   ]
+},
+
+{
+	"id": "change_setpoint_fan_away",
+  "title": {"en": "Change setpoint fan speeds AWAY" },
+  "titleFormatted": { "en": "Change setpoint fan speeds away to supply [[fan1]] % and exhaust [[fan2]] %" },
+  
+  "args": [
+    {
+    "name": "fan1",
+    "type": "number",
+	  "title": {"en":"Supply fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    },
+    {
+    "name": "fan2",
+    "type": "number",
+	  "title": {"en":"Extract fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    }
+  ]
 }
+
+,
+
+{
+	"id": "change_setpoint_fan_home",
+  "title": {"en": "Change setpoint fan speeds HOME" },
+  "titleFormatted": { "en": "Change setpoint fan speeds home to supply [[fan1]] % and exhaust [[fan2]] %" },
+  
+  "args": [
+    {
+    "name": "fan1",
+    "type": "number",
+	  "title": {"en":"Supply fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    },
+    {
+    "name": "fan2",
+    "type": "number",
+	  "title": {"en":"Extract fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    }
+  ]
+},
+
+{
+	"id": "change_setpoint_fan_high",
+  "title": {"en": "Change setpoint fan speeds HIGH" },
+  "titleFormatted": { "en": "Change setpoint fan speeds high to supply [[fan1]] % and exhaust [[fan2]] %" },
+  
+  "args": [
+    {
+    "name": "fan1",
+    "type": "number",
+	  "title": {"en":"Supply fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    },
+    {
+    "name": "fan2",
+    "type": "number",
+	  "title": {"en":"Extract fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    }
+  ]
+}
+
 
 
   ]

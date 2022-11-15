@@ -8,20 +8,25 @@
 	  
    "id": "ventilation_mode_changed",  
   "title": {
-    "en": "Ventilation mode change"
-  },
-   "tokens": [
-    {
-      "name": "new_mode",
-      "type": "string",
-      "title": { "en": "New mode" },
-      "example": "home"
-    }
-	],
+    "en": "Ventilation mode changed"
+  }
+	,
   "hint": {
     "en": "When ventilation mode changes"
   }
+},
+
+{
+	  
+  "id": "room_temperature_changed",  
+ "title": {
+   "en": "Room temperature changed"
+ },
+ "hint": {
+   "en": "When room temperature changes"
+ }
 }
+
    
   
   ],	

@@ -1,6 +1,6 @@
 {
 	  "type": "enum",
-	  "title": { "en": "Heat recovery ventilation state" },
+	  "title": { "en": "Ventilation mode" },
 	  "values": [
 		{
 			"id": "unknown",

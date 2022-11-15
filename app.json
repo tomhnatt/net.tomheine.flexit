@@ -1022,7 +1022,7 @@
     "my_ventilation_mode": {
       "type": "enum",
       "title": {
-        "en": "Heat recovery ventilation state"
+        "en": "Ventilation mode"
       },
       "values": [
         {

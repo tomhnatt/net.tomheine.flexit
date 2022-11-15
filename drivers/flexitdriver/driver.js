@@ -62,6 +62,13 @@ class MyDriver extends Driver {
         data: {
           id: "flexit_sh4",
         },
+        store: {
+          modbusTCP_ip: "192.168.0.95", //TODO: Aquire during installation
+          modbusTCP_port: 8234 //TODO: Aquire during installation
+        },
+        setting: {
+          modbusTCP_updateInterval: 20000,
+        }
       };
     });
   }

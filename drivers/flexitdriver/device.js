@@ -13,100 +13,78 @@ const net = require('net');
 
 const socket = new net.Socket();
 const client = new Modbus.client.TCP(socket, 1);
-const options = {
-  host: '192.168.0.95',  //TODO: Fikse at det ikke er fast IP
-  port: 8234,  //TODO: Fikse at det ikke er fast port
-};
 
 let requestId = 0;
 
+
+
+//TRIGGERS
 const TRIGGER_TEMPORARY_HIGH = [3006, 2, 'Temporary rapid ventilation', 'TRIGGER_TEMPORARY_HIGH'];
-const CANCEL_TEMPORARY_HIGH = [3006, 1, 'Temporary rapid ventilation - cancellation', 'CANCEL_TEMPORARY_HIGH'];
+const CANCEL_TEMPORARY_HIGH = [3006, 1, 'Temporary rapid ventilation - cancellation', 'CANCEL_TEMPORARY_HIGH'];  //TODO: Never used
 const TRIGGER_TEMPORARY_FIREPLACE = [3007, 2, 'Trigger temporary fireplace ventilation', 'TRIGGER_TEMPORARY_FIREPLACE'];
 const TRIGGER_HOME = [2013, 3, 'Trigger home ventilation', 'TRIGGER_HOME'];
 const TRIGGER_AWAY = [2013, 2, 'Trigger away ventilation', 'TRIGGER_AWAY'];
 const TRIGGER_HIGH = [2013, 4, 'Trigger high ventilation', 'TRIGGER_HIGH'];
 // const TRIGGER_FUME_HOOD = [2013,5,"Trigger fume hood ventilation","TRIGGER_FUME_HOOD"];
 
-const SUPPLY_AIR_FAN_SPEED = [5, 2, 'Supply air fan speed', 'SUPPLY_AIR_FAN_SPEED'];
-const EXHAUST_AIR_FAN_SPEED = [9, 2, 'Exhaust air fan speed', 'EXHAUST_AIR_FAN_SPEED'];
-const SUPPLY_AIR_FAN_SPEED_FEEDBACK = [21, 2, 'Supply air fan speed', 'SUPPLY_AIR_FAN_SPEED_FEEDBACK'];
-const EXHAUST_AIR_FAN_SPEED_FEEDBACK = [25, 2, 'Exhaust air fan speed', 'EXHAUST_AIR_FAN_SPEED_FEEDBACK'];
+//VALUES
 
-const ROTARY_HEAT_EXCHANGER_SPEED = [1, 2, 'Rotary heat exchange speed', 'ROTARY_HEAT_EXCHANGER_SPEED'];
+//modbus-register, modbus-size, title, key, min, maks, default, unit, capability
+const SUPPLY_AIR_FAN_SPEED = [5, 2, 'Supply air fan speed', 'SUPPLY_AIR_FAN_SPEED',0,100,0,"%","my_supply_air_fan_speed"];
+const EXHAUST_AIR_FAN_SPEED = [9, 2, 'Exhaust air fan speed', 'EXHAUST_AIR_FAN_SPEED',0,100,0,"%","my_exhaust_air_fan_speed"];
+const SUPPLY_AIR_FAN_SPEED_FEEDBACK = [21, 2, 'Supply air fan speed', 'SUPPLY_AIR_FAN_SPEED_FEEDBACK',0,18000,0,"rpm","my_supply_air_fan_speed_feedback"];
+const EXHAUST_AIR_FAN_SPEED_FEEDBACK = [25, 2, 'Exhaust air fan speed', 'EXHAUST_AIR_FAN_SPEED_FEEDBACK',0,18000,0,"rpm","my_exhaust_air_fan_speed_feedback"];
 
-const SUPPLY_AIR_TEMPERATURE = [5, 2, 'Supply air temperature', 'SUPPLY_AIR_TEMPERATURE'];
-const EXHAUST_AIR_TEMPERATURE = [13, 2, 'Exhaust air temperature', 'EXHAUST_AIR_TEMPERATURE'];
-const EXTRACT_AIR_TEMPERATURE = [9, 2, 'Extract air temperature', 'EXTRACT_AIR_TEMPERATURE'];
-const OUTSIDE_AIR_TEMPERATURE = [1, 2, 'Outside air temperature', 'OUTSIDE_AIR_TEMPERATURE'];
-const ROOM_TEMPERATURE = [17, 2, 'Room temperature', 'ROOM_TEMPERATURE'];
+const ROTARY_HEAT_EXCHANGER_SPEED = [1, 2, 'Rotary heat exchange speed', 'ROTARY_HEAT_EXCHANGER_SPEED',0,100,0,"%","my_rotary_heat_exchanger_speed"];
 
-const SETPOINT_HOME_TEMPERATURE = [1155, 2, 'Setpoint home temperature', 'SETPOINT_HOME_TEMPERATURE'];
-const SETPOINT_AWAY_TEMPERATURE = [1163, 2, 'Setpoint away temperature', 'SETPOINT_AWAY_TEMPERATURE'];
+const SUPPLY_AIR_TEMPERATURE = [5, 2, 'Supply air temperature', 'SUPPLY_AIR_TEMPERATURE',-50,80,0,"%","my_supply_air_temperature"];
+const EXHAUST_AIR_TEMPERATURE = [13, 2, 'Exhaust air temperature', 'EXHAUST_AIR_TEMPERATURE',-50,80,0,"%","my_exhaust_air_temperature"];
+const EXTRACT_AIR_TEMPERATURE = [9, 2, 'Extract air temperature', 'EXTRACT_AIR_TEMPERATURE',-50,80,0,"%","my_extract_air_temperature"];
+const OUTSIDE_AIR_TEMPERATURE = [1, 2, 'Outside air temperature', 'OUTSIDE_AIR_TEMPERATURE',-50,80,0,"%","my_outside_air_temperature"];
+const ROOM_TEMPERATURE = [17, 2, 'Room temperature', 'ROOM_TEMPERATURE',0,50,0,"C","my_room_temperature"];
 
-const OPERATING_TIME_FILTER = [1271, 1, 'Operating time filter', 'OPERATING_TIME_FILTER'];
-const OPERATING_TIME_FILTER_FOR_REPLACEMENT = [1269, 1, 'Operating time filter for replacement', 'OPERATING_TIME_FILTER_FOR_REPLACEMENT'];
+const SETPOINT_HOME_TEMPERATURE = [1155, 2, 'Setpoint home temperature', 'SETPOINT_HOME_TEMPERATURE', 10, 30, 10,"C","my_setpoint_home_temperature"];
+const SETPOINT_AWAY_TEMPERATURE = [1163, 2, 'Setpoint away temperature', 'SETPOINT_AWAY_TEMPERATURE', 10, 30, 10,"C","my_setpoint_away_temperature"];
 
-const VENTILATION_MODE = [3034, 1, 'Heat recovery ventilation state', 'VENTILATION_MODE'];
+const OPERATING_TIME_FILTER = [1271, 1, 'Operating time filter', 'OPERATING_TIME_FILTER',0,9999,0,"h",null];
+const OPERATING_TIME_FILTER_FOR_REPLACEMENT = [1269, 1, 'Operating time filter for replacement', 'OPERATING_TIME_FILTER_FOR_REPLACEMENT',0,9990,0,"h",null];
 
-const COMFORT_MODE = [2040, 1, 'Comfort button', 'COMFORT_MODE'];
-const ROOM_OPERATION_MODE = [2013, 1, 'Room operation mode', 'ROOM_OPERATION_MODE'];
+const VENTILATION_MODE = [3034, 1, 'Heat recovery ventilation state', 'VENTILATION_MODE',1,7,3,null,'my_ventilation_mode'];
+
+//TODO: Needed????
+const COMFORT_MODE = [2040, 1, 'Comfort button', 'COMFORT_MODE',0,1,0,null];
+const ROOM_OPERATION_MODE = [2013, 1, 'Room operation mode', 'ROOM_OPERATION_MODE',0,1,0,null];
 
 const RAPID_VENTILATION_RUNTIME = [1104, 1, 'Rapid ventilation runtime', 'RAPID_VENTILATION_RUNTIME']; // NB står 1103 i manualen
 const FIREPLACE_VENTILATION_RUNTIME = [1106, 1, 'Fireplace ventilation runtime', 'FIREPLACE_VENTILATION_RUNTIME']; // NB står 1105 i manualen
 const REMAINING_TIME_OF_RAPID_VENTILATION = [1035, 2, 'Remaining time of rapid ventilation', 'REMAINING_TIME_OF_RAPID_VENTILATION'];
 const REMAINING_TIME_OF_FIREPLACE_VENTILATION = [1037, 2, 'Remaining time of fireplace ventilation', 'REMAINING_TIME_OF_FIREPLACE_VENTILATION'];
 
+const SETPOINT_AWAY_SUPPLY_FAN = [1021, 2, 'Setpoint Away Supply Fan', 'SETPOINT_AWAY_SUPPLY_FAN',30,100,30,"%","fan_setpoint_supply_away"];
+const SETPOINT_AWAY_EXTRACT_FAN = [1023, 2, 'Setpoint Away Extract Fan', 'SETPOINT_AWAY_EXTRACT_FAN',30,100,30,"%","fan_setpoint_extract_away"];
+const SETPOINT_HOME_SUPPLY_FAN = [1013, 2, 'Setpoint Home Supply Fan', 'SETPOINT_HOME_SUPPLY_FAN',30,100,30,"%","fan_setpoint_supply_home"];
+const SETPOINT_HOME_EXTRACT_FAN = [1015, 2, 'Setpoint Home Extract Fan', 'SETPOINT_HOME_EXTRACT_FAN',30,100,30,"%","fan_setpoint_extract_home"];
+const SETPOINT_HIGH_SUPPLY_FAN = [1005, 2, 'Setpoint High Supply Fan', 'SETPOINT_HIGH_SUPPLY_FAN',30,100,30,"%","fan_setpoint_supply_high"];
+const SETPOINT_HIGH_EXTRACT_FAN = [1007, 2, 'Setpoint High Extract Fan', 'SETPOINT_HIGH_EXTRACT_FAN',30,100,30,"%","fan_setpoint_extract_high"];
+const SETPOINT_COOKER_HOOD_SUPPLY_FAN = [1037, 2, 'Setpoint Cooker hood Supply Fan', 'SETPOINT_COOKER_HOOD_SUPPLY_FAN',30,100,30,"%","fan_setpoint_supply_cooker_hood"];
+const SETPOINT_COOKER_HOOD_EXTRACT_FAN = [1039, 2, 'Setpoint Cooker hood Extract Fan', 'SETPOINT_COOKER_HOOD_EXTRACT_FAN',30,100,30,"%","fan_setpoint_extract_cooker_hood"];
+const SETPOINT_FIREPLACE_SUPPLY_FAN = [1029, 2, 'Setpoint Fireplace Supply Fan', 'SETPOINT_FIREPLACE_SUPPLY_FAN',30,100,30,"%","fan_setpoint_supply_fireplace"];
+const SETPOINT_FIREPLACE_EXTRACT_FAN = [1031, 2, 'Setpoint Fireplace Extract Fan', 'SETPOINT_FIREPLACE_EXTRACT_FAN',30,100,30,"%","fan_setpoint_extract_fireplace"];
+
+const TRIGGERS = [TRIGGER_TEMPORARY_HIGH, TRIGGER_TEMPORARY_FIREPLACE,TRIGGER_HOME, TRIGGER_AWAY,TRIGGER_HIGH];
+const PROPERTIES = [SUPPLY_AIR_FAN_SPEED, EXHAUST_AIR_FAN_SPEED, SUPPLY_AIR_FAN_SPEED_FEEDBACK, EXHAUST_AIR_FAN_SPEED_FEEDBACK, 
+                    ROTARY_HEAT_EXCHANGER_SPEED,
+                    SUPPLY_AIR_TEMPERATURE, EXHAUST_AIR_TEMPERATURE, EXTRACT_AIR_TEMPERATURE, OUTSIDE_AIR_TEMPERATURE,  ROOM_TEMPERATURE,  
+                    SETPOINT_HOME_TEMPERATURE, SETPOINT_AWAY_TEMPERATURE, 
+                    OPERATING_TIME_FILTER, OPERATING_TIME_FILTER_FOR_REPLACEMENT,
+                    VENTILATION_MODE, 
+                    COMFORT_MODE,  ROOM_OPERATION_MODE, 
+                    RAPID_VENTILATION_RUNTIME, FIREPLACE_VENTILATION_RUNTIME, REMAINING_TIME_OF_RAPID_VENTILATION, REMAINING_TIME_OF_FIREPLACE_VENTILATION, 
+                    SETPOINT_AWAY_SUPPLY_FAN, SETPOINT_AWAY_EXTRACT_FAN, SETPOINT_HOME_SUPPLY_FAN, SETPOINT_HOME_EXTRACT_FAN , SETPOINT_HIGH_SUPPLY_FAN, SETPOINT_HIGH_EXTRACT_FAN, SETPOINT_COOKER_HOOD_SUPPLY_FAN,SETPOINT_COOKER_HOOD_EXTRACT_FAN, SETPOINT_FIREPLACE_SUPPLY_FAN, SETPOINT_FIREPLACE_EXTRACT_FAN ]
+
 const ventilation_modes = ['unknown', 'off', 'away', 'home', 'high', 'fume_hood', 'fireplace', 'temporary_high'];
 
-const SETPOINT_AWAY_SUPPLY_FAN = [1021, 2, 'Setpoint Away Supply Fan', 'SETPOINT_AWAY_SUPPLY_FAN'];
-const SETPOINT_AWAY_EXTRACT_FAN = [1023, 2, 'Setpoint Away Extract Fan', 'SETPOINT_AWAY_EXTRACT_FAN'];
-const SETPOINT_HOME_SUPPLY_FAN = [1013, 2, 'Setpoint Home Supply Fan', 'SETPOINT_HOME_SUPPLY_FAN'];
-const SETPOINT_HOME_EXTRACT_FAN = [1015, 2, 'Setpoint Home Extract Fan', 'SETPOINT_HOME_EXTRACT_FAN'];
-const SETPOINT_HIGH_SUPPLY_FAN = [1005, 2, 'Setpoint High Supply Fan', 'SETPOINT_HIGH_SUPPLY_FAN'];
-const SETPOINT_HIGH_EXTRACT_FAN = [1007, 2, 'Setpoint High Extract Fan', 'SETPOINT_HIGH_EXTRACT_FAN'];
-const SETPOINT_COOKER_HOOD_SUPPLY_FAN = [1037, 2, 'Setpoint Cooker hood Supply Fan', 'SETPOINT_COOKER_HOOD_SUPPLY_FAN'];
-const SETPOINT_COOKER_HOOD_EXTRACT_FAN = [1039, 2, 'Setpoint Cooker hood Extract Fan', 'SETPOINT_COOKER_HOOD_EXTRACT_FAN'];
-const SETPOINT_FIREPLACE_SUPPLY_FAN = [1029, 2, 'Setpoint Fireplace Supply Fan', 'SETPOINT_FIREPLACE_SUPPLY_FAN'];
-const SETPOINT_FIREPLACE_EXTRACT_FAN = [1031, 2, 'Setpoint Fireplace Extract Fan', 'SETPOINT_FIREPLACE_EXTRACT_FAN'];
-
-/// ////////
-
-const SUPPLY_AIR_FAN_SPEED_KEY = 'SUPPLY_AIR_FAN_SPEED';
-const EXHAUST_AIR_FAN_SPEED_KEY = 'EXHAUST_AIR_FAN_SPEED';
-const SUPPLY_AIR_FAN_SPEED_FEEDBACK_KEY = 'SUPPLY_AIR_FAN_SPEED_FEEDBACK';
-const EXHAUST_AIR_FAN_SPEED_FEEDBACK_KEY = 'EXHAUST_AIR_FAN_SPEED_FEEDBACK';
-
-const ROTARY_HEAT_EXCHANGER_SPEED_KEY = 'ROTARY_HEAT_EXCHANGER_SPEED';
-
-const SUPPLY_AIR_TEMPERATURE_KEY = 'SUPPLY_AIR_TEMPERATURE';
-const EXHAUST_AIR_TEMPERATURE_KEY = 'EXHAUST_AIR_TEMPERATURE';
-const EXTRACT_AIR_TEMPERATURE_KEY = 'EXTRACT_AIR_TEMPERATURE';
-const OUTSIDE_AIR_TEMPERATURE_KEY = 'OUTSIDE_AIR_TEMPERATURE';
-const ROOM_TEMPERATURE_KEY = 'ROOM_TEMPERATURE';
-
-const SETPOINT_HOME_TEMPERATURE_KEY = 'SETPOINT_HOME_TEMPERATURE';
-const SETPOINT_AWAY_TEMPERATURE_KEY = 'SETPOINT_AWAY_TEMPERATURE';
-
-const VENTILATION_MODE_KEY = 'VENTILATION_MODE';
-
-const RAPID_VENTILATION_RUNTIME_KEY = 'RAPID_VENTILATION_RUNTIME';
-const FIREPLACE_VENTILATION_RUNTIME_KEY = 'FIREPLACE_VENTILATION_RUNTIME';
-const REMAINING_TIME_OF_RAPID_VENTILATION_KEY = 'REMAINING_TIME_OF_RAPID_VENTILATION';
-const REMAINING_TIME_OF_FIREPLACE_VENTILATION_KEY = 'REMAINING_TIME_OF_FIREPLACE_VENTILATION';
-
-const SETPOINT_AWAY_SUPPLY_FAN_KEY = 'SETPOINT_AWAY_SUPPLY_FAN';
-const SETPOINT_AWAY_EXTRACT_FAN_KEY = 'SETPOINT_AWAY_EXTRACT_FAN';
-const SETPOINT_HOME_SUPPLY_FAN_KEY = 'SETPOINT_HOME_SUPPLY_FAN';
-const SETPOINT_HOME_EXTRACT_FAN_KEY = 'SETPOINT_HOME_EXTRACT_FAN';
-const SETPOINT_HIGH_SUPPLY_FAN_KEY = 'SETPOINT_HIGH_SUPPLY_FAN';
-const SETPOINT_HIGH_EXTRACT_FAN_KEY = 'SETPOINT_HIGH_EXTRACT_FAN';
-const SETPOINT_COOKER_HOOD_SUPPLY_FAN_KEY = 'SETPOINT_COOKER_HOOD_SUPPLY_FAN';
-const SETPOINT_COOKER_HOOD_EXTRACT_FAN_KEY = 'SETPOINT_COOKER_HOOD_EXTRACT_FAN';
-const SETPOINT_FIREPLACE_SUPPLY_FAN_KEY = 'SETPOINT_FIREPLACE_SUPPLY_FAN';
-const SETPOINT_FIREPLACE_EXTRACT_FAN_KEY = 'SETPOINT_FIREPLACE_EXTRACT_FAN';
-
-
+const FILTER_REPLACEMENT_TIME_KEY = "FILTER_REPLACEMENT_TIME";
 
 class MyDevice extends Device {
 
@@ -186,7 +164,7 @@ class MyDevice extends Device {
         // socket.end()
       });
 
-    this.registerValues[VENTILATION_MODE_KEY] = action[1]; // TODO:For å hurtig oppdatere modus i visningen inntil det leses igjen.  Bør heller trigge lesing?
+    this.registerValues[this.propertyKey(VENTILATION_MODE)] = action[1]; // TODO:For å hurtig oppdatere modus i visningen inntil det leses igjen.  Bør heller trigge lesing?
   }
 
   async cancelTemporary() {
@@ -225,6 +203,11 @@ class MyDevice extends Device {
       .trigger(this, tokens, state)
       .then(this.log)
       .catch(this.error);
+
+      this._roomTemperatureChanged
+      .trigger(this, tokens, state)
+      .then(this.log)
+      .catch(this.error);
   }
 
   async readHoldingFlexit(register, prosessing) {
@@ -248,6 +231,22 @@ class MyDevice extends Device {
       // d.log("Value of input " + register[2] + ": " + d.registerValues[register[3]] );
     }, console.error);
   }
+
+propertyKey(property) {
+  return property[3];
+}
+
+propertyMin(property) {
+  return property[4];
+}
+
+propertyMax(property) {
+  return property[5];
+}
+
+propertyCapability(property) {
+  return property[8];
+}
 
   fromFloat(data) {
     const farr = new Float32Array(1);
@@ -275,54 +274,49 @@ class MyDevice extends Device {
   }
 
 	 toVentilationMode(data) {
-    // console.log("mode"+data[0]);
-    // return "mode"+data[0];
     return data[0];
   }
 
   translateToMode(mode) {
-    // this.log("Ventilation mode:"+mode);
-    // this.log(ventilation_modes[mode]);
-
     return ventilation_modes[mode];
   }
 
+  updateCapabilityFromRegisterValue(property) {
+    if (this.registerValues[this.propertyKey(property)] >= this.propertyMin(property)) //TODO: Add this:  && this.registerValues[this.propertyKey(property)] <= this.propertyMax(property))
+    this.setCapabilityValue(this.propertyCapability(property), this.registerValues[this.propertyKey(property)]);
+  }
+
   async updateCapabilitesFromRegister() {
-    this.setCapabilityValue('my_exhaust_air_fan_speed', this.registerValues[EXHAUST_AIR_FAN_SPEED_KEY]);
-    this.setCapabilityValue('my_supply_air_fan_speed', this.registerValues[SUPPLY_AIR_FAN_SPEED_KEY]);
+    this.updateCapabilityFromRegisterValue(EXHAUST_AIR_FAN_SPEED);
+    this.updateCapabilityFromRegisterValue(SUPPLY_AIR_FAN_SPEED);
 
-    this.setCapabilityValue('my_exhaust_air_fan_speed_feedback', this.registerValues[EXHAUST_AIR_FAN_SPEED_FEEDBACK_KEY]);
-    this.setCapabilityValue('my_supply_air_fan_speed_feedback', this.registerValues[SUPPLY_AIR_FAN_SPEED_FEEDBACK_KEY]);
+    this.updateCapabilityFromRegisterValue(EXHAUST_AIR_FAN_SPEED_FEEDBACK);
+    this.updateCapabilityFromRegisterValue(SUPPLY_AIR_FAN_SPEED_FEEDBACK);
 
-    this.setCapabilityValue('my_supply_air_temperature', this.registerValues[SUPPLY_AIR_TEMPERATURE_KEY]);
-    this.setCapabilityValue('my_exhaust_air_temperature', this.registerValues[EXHAUST_AIR_TEMPERATURE_KEY]);
-    this.setCapabilityValue('my_extract_air_temperature', this.registerValues[EXTRACT_AIR_TEMPERATURE_KEY]);
-    this.setCapabilityValue('my_outside_air_temperature', this.registerValues[OUTSIDE_AIR_TEMPERATURE_KEY]);
-    this.setCapabilityValue('my_room_temperature', this.registerValues[ROOM_TEMPERATURE_KEY]);
+    this.updateCapabilityFromRegisterValue(SUPPLY_AIR_TEMPERATURE);
+    this.updateCapabilityFromRegisterValue(EXHAUST_AIR_TEMPERATURE);
+    this.updateCapabilityFromRegisterValue(EXTRACT_AIR_TEMPERATURE);
+    this.updateCapabilityFromRegisterValue(OUTSIDE_AIR_TEMPERATURE);
+    this.updateCapabilityFromRegisterValue(ROOM_TEMPERATURE);
 
-    this.setCapabilityValue('my_rotary_heat_exchanger_speed', this.registerValues[ROTARY_HEAT_EXCHANGER_SPEED_KEY]);
+    this.updateCapabilityFromRegisterValue(ROTARY_HEAT_EXCHANGER_SPEED);
 
-    if (this.registerValues[SETPOINT_HOME_TEMPERATURE_KEY] >= 10) {
-      this.setCapabilityValue('my_setpoint_home_temperature', this.registerValues[SETPOINT_HOME_TEMPERATURE_KEY]);
-    }
-    if (this.registerValues[SETPOINT_AWAY_TEMPERATURE_KEY] >= 10) {
-      this.setCapabilityValue('my_setpoint_away_temperature', this.registerValues[SETPOINT_AWAY_TEMPERATURE_KEY]);
-    }
+    this.updateCapabilityFromRegisterValue(SETPOINT_HOME_TEMPERATURE);
+    this.updateCapabilityFromRegisterValue(SETPOINT_AWAY_TEMPERATURE);
+  
+    this.setCapabilityValue(this.propertyCapability(VENTILATION_MODE), this.translateToMode(this.registerValues[this.propertyKey(VENTILATION_MODE)]));
+    this.setCapabilityValue('my_filter_replacement',  this.registerValues[FILTER_REPLACEMENT_TIME_KEY]);
 
-    this.setCapabilityValue('my_ventilation_mode', this.translateToMode(this.registerValues[VENTILATION_MODE_KEY]));
-
-    this.setCapabilityValue('my_filter_replacement', this.registerValues['OPERATING_TIME_FILTER_FOR_REPLACEMENT'] - this.registerValues['OPERATING_TIME_FILTER']);
-
-    this.setCapabilityValue('fan_setpoint_supply_away', this.registerValues['SETPOINT_AWAY_SUPPLY_FAN']);
-    this.setCapabilityValue('fan_setpoint_extract_away', this.registerValues['SETPOINT_AWAY_EXTRACT_FAN']);
-    this.setCapabilityValue('fan_setpoint_supply_home', this.registerValues['SETPOINT_HOME_SUPPLY_FAN']);
-    this.setCapabilityValue('fan_setpoint_extract_home', this.registerValues['SETPOINT_HOME_EXTRACT_FAN']);
-    this.setCapabilityValue('fan_setpoint_supply_high', this.registerValues['SETPOINT_HIGH_SUPPLY_FAN']);
-    this.setCapabilityValue('fan_setpoint_extract_high', this.registerValues['SETPOINT_HIGH_EXTRACT_FAN']);
-    this.setCapabilityValue('fan_setpoint_supply_cooker_hood', this.registerValues['SETPOINT_COOKER_HOOD_SUPPLY_FAN']);
-    this.setCapabilityValue('fan_setpoint_extract_cooker_hood', this.registerValues['SETPOINT_COOKER_HOOD_EXTRACT_FAN']);
-    this.setCapabilityValue('fan_setpoint_supply_fireplace', this.registerValues['SETPOINT_FIREPLACE_SUPPLY_FAN']);
-    this.setCapabilityValue('fan_setpoint_extract_fireplace', this.registerValues['SETPOINT_FIREPLACE_EXTRACT_FAN']);
+    this.updateCapabilityFromRegisterValue(SETPOINT_AWAY_SUPPLY_FAN);
+    this.updateCapabilityFromRegisterValue(SETPOINT_AWAY_EXTRACT_FAN);
+    this.updateCapabilityFromRegisterValue(SETPOINT_HOME_SUPPLY_FAN);
+    this.updateCapabilityFromRegisterValue(SETPOINT_HOME_EXTRACT_FAN);
+    this.updateCapabilityFromRegisterValue(SETPOINT_HIGH_SUPPLY_FAN);
+    this.updateCapabilityFromRegisterValue(SETPOINT_HIGH_EXTRACT_FAN);
+    this.updateCapabilityFromRegisterValue(SETPOINT_COOKER_HOOD_SUPPLY_FAN);
+    this.updateCapabilityFromRegisterValue(SETPOINT_COOKER_HOOD_EXTRACT_FAN);
+    this.updateCapabilityFromRegisterValue(SETPOINT_FIREPLACE_SUPPLY_FAN);
+    this.updateCapabilityFromRegisterValue(SETPOINT_FIREPLACE_EXTRACT_FAN);
 
     // console.log(this.registerValues["SETPOINT_AWAY_SUPPLY_FAN"]+" "+this.registerValues["SETPOINT_AWAY_EXTRACT_FAN"]);
     // console.log(this.registerValues["SETPOINT_HOME_SUPPLY_FAN"]+" "+this.registerValues["SETPOINT_HOME_EXTRACT_FAN"]);
@@ -334,21 +328,26 @@ class MyDevice extends Device {
 
 		  requestId %= 100;
 
+
+      var roomTemperatureOld = this.registerValues[this.propertyKey(ROOM_TEMPERATURE)];
+      var ventilationModeOld =  this.registerValues[this.propertyKey(VENTILATION_MODE)];
+
 		 // if(requestId == 0 )  // every 100-time
 		 {
 			 this.readHoldingFlexit(OPERATING_TIME_FILTER, this.toFloat);
 			 this.readHoldingFlexit(OPERATING_TIME_FILTER_FOR_REPLACEMENT, this.toFloat);
+       this.registerValues[FILTER_REPLACEMENT_TIME_KEY] =  this.registerValues[this.propertyKey(OPERATING_TIME_FILTER_FOR_REPLACEMENT)] - this.registerValues[this.propertyKey(OPERATING_TIME_FILTER)];
 
-			 this.readHoldingFlexit(SETPOINT_AWAY_SUPPLY_FAN, this.toFloat1);
-			 this.readHoldingFlexit(SETPOINT_AWAY_EXTRACT_FAN, this.toFloat1);
-			 this.readHoldingFlexit(SETPOINT_HOME_SUPPLY_FAN, this.toFloat1);
-			 this.readHoldingFlexit(SETPOINT_HOME_EXTRACT_FAN, this.toFloat1);
-			 this.readHoldingFlexit(SETPOINT_HIGH_SUPPLY_FAN, this.toFloat1);
-			 this.readHoldingFlexit(SETPOINT_HIGH_EXTRACT_FAN, this.toFloat1);
-       this.readHoldingFlexit(SETPOINT_COOKER_HOOD_SUPPLY_FAN, this.toFloat1);
-			 this.readHoldingFlexit(SETPOINT_COOKER_HOOD_EXTRACT_FAN, this.toFloat1);
-			 this.readHoldingFlexit(SETPOINT_FIREPLACE_SUPPLY_FAN, this.toFloat1);
-			 this.readHoldingFlexit(SETPOINT_FIREPLACE_EXTRACT_FAN, this.toFloat1); 
+			 this.readHoldingFlexit(SETPOINT_AWAY_SUPPLY_FAN, this.toFloat);
+			 this.readHoldingFlexit(SETPOINT_AWAY_EXTRACT_FAN, this.toFloat);
+			 this.readHoldingFlexit(SETPOINT_HOME_SUPPLY_FAN, this.toFloat);
+			 this.readHoldingFlexit(SETPOINT_HOME_EXTRACT_FAN, this.toFloat);
+			 this.readHoldingFlexit(SETPOINT_HIGH_SUPPLY_FAN, this.toFloat);
+			 this.readHoldingFlexit(SETPOINT_HIGH_EXTRACT_FAN, this.toFloat);
+       this.readHoldingFlexit(SETPOINT_COOKER_HOOD_SUPPLY_FAN, this.toFloat);
+			 this.readHoldingFlexit(SETPOINT_COOKER_HOOD_EXTRACT_FAN, this.toFloat);
+			 this.readHoldingFlexit(SETPOINT_FIREPLACE_SUPPLY_FAN, this.toFloat);
+			 this.readHoldingFlexit(SETPOINT_FIREPLACE_EXTRACT_FAN, this.toFloat); 
      }
 
 		 // if(requestId % 10 == 0) //every 10-time
@@ -365,13 +364,16 @@ class MyDevice extends Device {
 
 	     this.readHoldingFlexit(ROTARY_HEAT_EXCHANGER_SPEED, this.toFloat);
 
-		 this.readInputFlexit(SUPPLY_AIR_TEMPERATURE, this.toFloat);
-		 this.readInputFlexit(EXHAUST_AIR_TEMPERATURE, this.toFloat);
-		 this.readInputFlexit(EXTRACT_AIR_TEMPERATURE, this.toFloat);
-		 this.readInputFlexit(OUTSIDE_AIR_TEMPERATURE, this.toFloat);
-		 this.readInputFlexit(ROOM_TEMPERATURE, this.toFloat);
+		 this.readInputFlexit(SUPPLY_AIR_TEMPERATURE, this.toFloat1);
+		 this.readInputFlexit(EXHAUST_AIR_TEMPERATURE, this.toFloat1);
+		 this.readInputFlexit(EXTRACT_AIR_TEMPERATURE, this.toFloat1);
+		 this.readInputFlexit(OUTSIDE_AIR_TEMPERATURE, this.toFloat1);
+		 this.readInputFlexit(ROOM_TEMPERATURE, this.toFloat1);
+    
 
+  
 		 this.readInputFlexit(VENTILATION_MODE, this.toVentilationMode);
+   
 
 		  this.readHoldingFlexit(SETPOINT_HOME_TEMPERATURE, this.toFloat1);
 		  this.readHoldingFlexit(SETPOINT_AWAY_TEMPERATURE, this.toFloat1);
@@ -381,7 +383,14 @@ class MyDevice extends Device {
 		 this.readInputFlexit(REMAINING_TIME_OF_RAPID_VENTILATION, this.toFloat);
 		 this.readInputFlexit(REMAINING_TIME_OF_FIREPLACE_VENTILATION, this.toFloat);
 
-		 // this.log(this.registerValues);
+     if (this.registerValues[this.propertyKey(ROOM_TEMPERATURE)] != roomTemperatureOld) 
+     {
+      _roomTemperatureChanged.trigger();
+     }
+     if (this.registerValues[this.propertyKey(VENTILATION_MODE)] != ventilationModeOld) 
+     {
+      _ventilatiopnModeChanged.trigger();
+     }
   }
 
   async setInitialValues() {
@@ -416,19 +425,14 @@ class MyDevice extends Device {
       SETPOINT_COOKER_HOOD_SUPPLY_FAN: 30,
 		  SETPOINT_COOKER_HOOD_EXTRACT_FAN: 30,
       SETPOINT_FIREPLACE_SUPPLY_FAN: 30,
-		  SETPOINT_FIREPLACE_EXTRACT_FAN: 30
+		  SETPOINT_FIREPLACE_EXTRACT_FAN: 30,
+      FILTER_REPLACEMENT_TIME:0
 
     };
 
     this.updateCapabilitesFromRegister();
   }
 
-  triggerMyFlow(device, tokens, state) {
-    this._triggerTemporaryHigh
-      .trigger(device, tokens, state)
-      .then(this.log)
-      .catch(this.error);
-  }
 
   async onInit() {
     this.log('MyDevice has been initialized');
@@ -437,10 +441,16 @@ class MyDevice extends Device {
 
 	 // this._triggerTemporaryHigh = this.homey.flow.getDeviceTriggerCard("temporary_high");
 
-    setInterval(this.updateCapabilitesFromRegister.bind(this), 2000);
+    setInterval(this.updateCapabilitesFromRegister.bind(this), 5000);
 
     const device = this;
 
+    const settings = device.getSettings();
+
+    const options = {
+      host:  device.getStoreValue("modbusTCP_ip"), 
+      port: device.getStoreValue("modbusTCP_port")
+    };
     // var closedOnPurpose = false;
 
     socket.on('connect', () => {
@@ -448,15 +458,11 @@ class MyDevice extends Device {
       // device.setComfortModeFlexit();
       device.updateFlexitValues = device.updateFlexitValues.bind(device);
       device.updateFlexitValues();
-
-		 const settings = device.getSettings();
-
       setInterval(device.updateFlexitValues.bind(device), settings.modbusTCP_updateInterval);
     });
 
     socket.on('close', () => {
       device.log('Client closed.Reconnecting');
-
       // if (!device.closedOnPurpose) {
       socket.reconnect();
       // }
@@ -535,6 +541,7 @@ class MyDevice extends Device {
     });
 
     this._ventilationModeChanged = this.homey.flow.getDeviceTriggerCard('ventilation_mode_changed');
+    this._roomTemperatureChanged = this.homey.flow.getDeviceTriggerCard('room_temperature_changed');
 
     /* DeviceApi.on('state-changed', (value) => {
       this.setCapabilityValue('my_supply_air_fan_speed', value).catch(this.error);

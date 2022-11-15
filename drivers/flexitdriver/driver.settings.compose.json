@@ -7,20 +7,5 @@
 		"min": 0,
 		"max": 100000,
 		"units": { "en": "milliseconds" }
-    },
-    {
-      "id": "modbusTCP_ip",
-      "type": "text",
-      "label": { "en": "IP-adress" },
-      "value": "10.0.0.95",
-      "hint": { "en": "IP-adress" }
-    },
-	{
-      "id": "modbusTCP_port",
-      "type": "text",
-      "label": { "en": "Port" },
-      "value": "8234",
-      "hint": { "en": "Port" }
     }
-	
 ]

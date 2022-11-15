@@ -1019,42 +1019,6 @@
       "insights": true,
       "icon": "/assets/supply.svg"
     },
-    "my_test_temperature": {
-      "type": "number",
-      "title": {
-        "en": "Test temperature"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": "C"
-      },
-      "min": -50,
-      "max": 80,
-      "insights": true,
-      "icon": "/assets/room.svg"
-    },
-    "my_trigger_fireplace": {
-      "type": "boolean",
-      "title": {
-        "en": "Trigger temporary fireplace ventilation"
-      },
-      "uiComponent": "toggle",
-      "getable": false,
-      "setable": true,
-      "uiQuickAction": true
-    },
-    "my_trigger_high": {
-      "type": "boolean",
-      "title": {
-        "en": "Trigger temporary rapid ventilation"
-      },
-      "uiComponent": "toggle",
-      "getable": false,
-      "setable": true,
-      "uiQuickAction": true
-    },
     "my_ventilation_mode": {
       "type": "enum",
       "title": {

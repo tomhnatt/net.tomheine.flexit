@@ -33,16 +33,6 @@
         "title": {
           "en": "Ventilation mode changed"
         },
-        "tokens": [
-          {
-            "name": "new_mode",
-            "type": "string",
-            "title": {
-              "en": "New mode"
-            },
-            "example": "home"
-          }
-        ],
         "hint": {
           "en": "When ventilation mode changes"
         },
@@ -59,16 +49,6 @@
         "title": {
           "en": "Room temperature changed"
         },
-        "tokens": [
-          {
-            "name": "new_temperature",
-            "type": "number",
-            "title": {
-              "en": "New temperature"
-            },
-            "example": "9.8"
-          }
-        ],
         "hint": {
           "en": "When room temperature changes"
         },

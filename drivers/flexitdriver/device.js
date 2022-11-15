@@ -18,6 +18,9 @@ let requestId = 0;
 
 
 
+
+
+
 //TRIGGERS
 const TRIGGER_TEMPORARY_HIGH = [3006, 2, 'Temporary rapid ventilation', 'TRIGGER_TEMPORARY_HIGH'];
 const CANCEL_TEMPORARY_HIGH = [3006, 1, 'Temporary rapid ventilation - cancellation', 'CANCEL_TEMPORARY_HIGH'];  //TODO: Never used
@@ -37,14 +40,14 @@ const EXHAUST_AIR_FAN_SPEED_FEEDBACK = [25, 2, 'Exhaust air fan speed', 'EXHAUST
 
 const ROTARY_HEAT_EXCHANGER_SPEED = [1, 2, 'Rotary heat exchange speed', 'ROTARY_HEAT_EXCHANGER_SPEED',0,100,0,"%","my_rotary_heat_exchanger_speed"];
 
-const SUPPLY_AIR_TEMPERATURE = [5, 2, 'Supply air temperature', 'SUPPLY_AIR_TEMPERATURE',-50,80,0,"%","my_supply_air_temperature"];
-const EXHAUST_AIR_TEMPERATURE = [13, 2, 'Exhaust air temperature', 'EXHAUST_AIR_TEMPERATURE',-50,80,0,"%","my_exhaust_air_temperature"];
-const EXTRACT_AIR_TEMPERATURE = [9, 2, 'Extract air temperature', 'EXTRACT_AIR_TEMPERATURE',-50,80,0,"%","my_extract_air_temperature"];
-const OUTSIDE_AIR_TEMPERATURE = [1, 2, 'Outside air temperature', 'OUTSIDE_AIR_TEMPERATURE',-50,80,0,"%","my_outside_air_temperature"];
-const ROOM_TEMPERATURE = [17, 2, 'Room temperature', 'ROOM_TEMPERATURE',0,50,0,"C","my_room_temperature"];
+const SUPPLY_AIR_TEMPERATURE = [5, 2, 'Supply air temperature', 'SUPPLY_AIR_TEMPERATURE',-50,80,0.0,"%","my_supply_air_temperature"];
+const EXHAUST_AIR_TEMPERATURE = [13, 2, 'Exhaust air temperature', 'EXHAUST_AIR_TEMPERATURE',-50,80,0.0,"%","my_exhaust_air_temperature"];
+const EXTRACT_AIR_TEMPERATURE = [9, 2, 'Extract air temperature', 'EXTRACT_AIR_TEMPERATURE',-50,80,0.0,"%","my_extract_air_temperature"];
+const OUTSIDE_AIR_TEMPERATURE = [1, 2, 'Outside air temperature', 'OUTSIDE_AIR_TEMPERATURE',-50,80,0.0,"%","my_outside_air_temperature"];
+const ROOM_TEMPERATURE = [17, 2, 'Room temperature', 'ROOM_TEMPERATURE',0,50,0.0,"C","my_room_temperature"];
 
-const SETPOINT_HOME_TEMPERATURE = [1155, 2, 'Setpoint home temperature', 'SETPOINT_HOME_TEMPERATURE', 10, 30, 10,"C","my_setpoint_home_temperature"];
-const SETPOINT_AWAY_TEMPERATURE = [1163, 2, 'Setpoint away temperature', 'SETPOINT_AWAY_TEMPERATURE', 10, 30, 10,"C","my_setpoint_away_temperature"];
+const SETPOINT_HOME_TEMPERATURE = [1155, 2, 'Setpoint home temperature', 'SETPOINT_HOME_TEMPERATURE', 10, 30, 10.0,"C","my_setpoint_home_temperature"];
+const SETPOINT_AWAY_TEMPERATURE = [1163, 2, 'Setpoint away temperature', 'SETPOINT_AWAY_TEMPERATURE', 10, 30, 10.0,"C","my_setpoint_away_temperature"];
 
 const OPERATING_TIME_FILTER = [1271, 1, 'Operating time filter', 'OPERATING_TIME_FILTER',0,9999,0,"h",null];
 const OPERATING_TIME_FILTER_FOR_REPLACEMENT = [1269, 1, 'Operating time filter for replacement', 'OPERATING_TIME_FILTER_FOR_REPLACEMENT',0,9990,0,"h",null];
@@ -55,10 +58,10 @@ const VENTILATION_MODE = [3034, 1, 'Heat recovery ventilation state', 'VENTILATI
 const COMFORT_MODE = [2040, 1, 'Comfort button', 'COMFORT_MODE',0,1,0,null];
 const ROOM_OPERATION_MODE = [2013, 1, 'Room operation mode', 'ROOM_OPERATION_MODE',0,1,0,null];
 
-const RAPID_VENTILATION_RUNTIME = [1104, 1, 'Rapid ventilation runtime', 'RAPID_VENTILATION_RUNTIME']; // NB står 1103 i manualen
-const FIREPLACE_VENTILATION_RUNTIME = [1106, 1, 'Fireplace ventilation runtime', 'FIREPLACE_VENTILATION_RUNTIME']; // NB står 1105 i manualen
-const REMAINING_TIME_OF_RAPID_VENTILATION = [1035, 2, 'Remaining time of rapid ventilation', 'REMAINING_TIME_OF_RAPID_VENTILATION'];
-const REMAINING_TIME_OF_FIREPLACE_VENTILATION = [1037, 2, 'Remaining time of fireplace ventilation', 'REMAINING_TIME_OF_FIREPLACE_VENTILATION'];
+const RAPID_VENTILATION_RUNTIME = [1104, 1, 'Rapid ventilation runtime', 'RAPID_VENTILATION_RUNTIME',1,360,1,"min",null]; // NB står 1103 i manualen
+const FIREPLACE_VENTILATION_RUNTIME = [1106, 1, 'Fireplace ventilation runtime', 'FIREPLACE_VENTILATION_RUNTIME',0,360,0,"min",null]; // NB står 1105 i manualen
+const REMAINING_TIME_OF_RAPID_VENTILATION = [1035, 2, 'Remaining time of rapid ventilation', 'REMAINING_TIME_OF_RAPID_VENTILATION',0,360,0,"min",null];
+const REMAINING_TIME_OF_FIREPLACE_VENTILATION = [1037, 2, 'Remaining time of fireplace ventilation', 'REMAINING_TIME_OF_FIREPLACE_VENTILATION',0,360,0,"min",null];
 
 const SETPOINT_AWAY_SUPPLY_FAN = [1021, 2, 'Setpoint Away Supply Fan', 'SETPOINT_AWAY_SUPPLY_FAN',30,100,30,"%","fan_setpoint_supply_away"];
 const SETPOINT_AWAY_EXTRACT_FAN = [1023, 2, 'Setpoint Away Extract Fan', 'SETPOINT_AWAY_EXTRACT_FAN',30,100,30,"%","fan_setpoint_extract_away"];
@@ -244,6 +247,10 @@ propertyMax(property) {
   return property[5];
 }
 
+propertyDefault(property) {
+  return property[6];
+}
+
 propertyCapability(property) {
   return property[8];
 }
@@ -394,41 +401,13 @@ propertyCapability(property) {
   }
 
   async setInitialValues() {
-    this.registerValues =		{
-		  SUPPLY_AIR_FAN_SPEED: 0,
-		  EXHAUST_AIR_FAN_SPEED: 0,
-		  SUPPLY_AIR_TEMPERATURE: 0.0,
-		  EXHAUST_AIR_TEMPERATURE: 0.0,
-		  EXTRACT_AIR_TEMPERATURE: 0.0,
-		  OUTSIDE_AIR_TEMPERATURE: 0.0,
-		  ROOM_TEMPERATURE: 0.0,
-		  VENTILATION_MODE: 0,
-		  COMFORT_MODE: 0,
-		  ROOM_OPERATION_MODE: 0,
-		  SETPOINT_HOME_TEMPERATURE: 0.0,
-		  SETPOINT_AWAY_TEMPERATURE: 0.0,
-		  OPERATING_TIME_FILTER: 0,
-		  OPERATING_TIME_FILTER_FOR_REPLACEMENT: 0,
-		  SUPPLY_AIR_FAN_SPEED_FEEDBACK: 0,
-		  EXHAUST_AIR_FAN_SPEED_FEEDBACK: 0,
-		  ROTARY_HEAT_EXCHANGER_SPEED: 0,
-		  RAPID_VENTILATION_RUNTIME: 0,
-		  FIREPLACE_VENTILATION_RUNTIME: 0,
-		  REMAINING_TIME_OF_RAPID_VENTILATION: 0,
-		  REMAINING_TIME_OF_FIREPLACE_VENTILATION: 0,
-		  SETPOINT_AWAY_SUPPLY_FAN: 30,
-		  SETPOINT_AWAY_EXTRACT_FAN: 30,
-		  SETPOINT_HOME_SUPPLY_FAN: 30,
-		  SETPOINT_HOME_EXTRACT_FAN: 30,
-		  SETPOINT_HIGH_SUPPLY_FAN: 30,
-		  SETPOINT_HIGH_EXTRACT_FAN: 30,
-      SETPOINT_COOKER_HOOD_SUPPLY_FAN: 30,
-		  SETPOINT_COOKER_HOOD_EXTRACT_FAN: 30,
-      SETPOINT_FIREPLACE_SUPPLY_FAN: 30,
-		  SETPOINT_FIREPLACE_EXTRACT_FAN: 30,
-      FILTER_REPLACEMENT_TIME:0
+    
+    this.registerValues =		{FILTER_REPLACEMENT_TIME:0};
 
-    };
+    PROPERTIES.forEach((item) => {
+      console.log(this.propertyKey(item) +" - " + this.propertyDefault(item));
+      this.registerValues[this.propertyKey(item)] = this.propertyDefault(item);
+    })
 
     this.updateCapabilitesFromRegister();
   }

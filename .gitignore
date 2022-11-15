@@ -4,3 +4,4 @@ build/
 
 # Added by Homey CLI
 /.homeybuild/
+~$modbus_nordic_basic_updated.xlsx

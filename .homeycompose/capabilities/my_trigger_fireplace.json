@@ -1,9 +1,0 @@
-{
-	  "type": "boolean",
-	  "title": { "en": "Trigger temporary fireplace ventilation" },
-	  "uiComponent": "toggle",
-	  "getable": false,
-	  "setable": true,
-	  "uiQuickAction": true
-	
-}

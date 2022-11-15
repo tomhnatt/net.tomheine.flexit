@@ -1,9 +1,0 @@
-{
-	  "type": "boolean",
-	  "title": { "en": "Trigger temporary rapid ventilation" },
-	  "uiComponent": "toggle",
-	  "getable": false,
-	  "setable": true,
-	  "uiQuickAction": true
-	
-}

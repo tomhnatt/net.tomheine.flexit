@@ -294,53 +294,29 @@ propertyCapability(property) {
   }
 
   async updateCapabilitesFromRegister() {
-    this.updateCapabilityFromRegisterValue(EXHAUST_AIR_FAN_SPEED);
-    this.updateCapabilityFromRegisterValue(SUPPLY_AIR_FAN_SPEED);
 
-    this.updateCapabilityFromRegisterValue(EXHAUST_AIR_FAN_SPEED_FEEDBACK);
-    this.updateCapabilityFromRegisterValue(SUPPLY_AIR_FAN_SPEED_FEEDBACK);
-
-    this.updateCapabilityFromRegisterValue(SUPPLY_AIR_TEMPERATURE);
-    this.updateCapabilityFromRegisterValue(EXHAUST_AIR_TEMPERATURE);
-    this.updateCapabilityFromRegisterValue(EXTRACT_AIR_TEMPERATURE);
-    this.updateCapabilityFromRegisterValue(OUTSIDE_AIR_TEMPERATURE);
-    this.updateCapabilityFromRegisterValue(ROOM_TEMPERATURE);
-
-    this.updateCapabilityFromRegisterValue(ROTARY_HEAT_EXCHANGER_SPEED);
-
-    this.updateCapabilityFromRegisterValue(SETPOINT_HOME_TEMPERATURE);
-    this.updateCapabilityFromRegisterValue(SETPOINT_AWAY_TEMPERATURE);
+    PROPERTIES.forEach((item) => {
+      if(this.propertyCapability(item) != null)
+      this.updateCapabilityFromRegisterValue(this.propertyKey(item));
+    })
   
+    //Capabilities that has to be set manually
     this.setCapabilityValue(this.propertyCapability(VENTILATION_MODE), this.translateToMode(this.registerValues[this.propertyKey(VENTILATION_MODE)]));
     this.setCapabilityValue('my_filter_replacement',  this.registerValues[FILTER_REPLACEMENT_TIME_KEY]);
 
-    this.updateCapabilityFromRegisterValue(SETPOINT_AWAY_SUPPLY_FAN);
-    this.updateCapabilityFromRegisterValue(SETPOINT_AWAY_EXTRACT_FAN);
-    this.updateCapabilityFromRegisterValue(SETPOINT_HOME_SUPPLY_FAN);
-    this.updateCapabilityFromRegisterValue(SETPOINT_HOME_EXTRACT_FAN);
-    this.updateCapabilityFromRegisterValue(SETPOINT_HIGH_SUPPLY_FAN);
-    this.updateCapabilityFromRegisterValue(SETPOINT_HIGH_EXTRACT_FAN);
-    this.updateCapabilityFromRegisterValue(SETPOINT_COOKER_HOOD_SUPPLY_FAN);
-    this.updateCapabilityFromRegisterValue(SETPOINT_COOKER_HOOD_EXTRACT_FAN);
-    this.updateCapabilityFromRegisterValue(SETPOINT_FIREPLACE_SUPPLY_FAN);
-    this.updateCapabilityFromRegisterValue(SETPOINT_FIREPLACE_EXTRACT_FAN);
-
-    // console.log(this.registerValues["SETPOINT_AWAY_SUPPLY_FAN"]+" "+this.registerValues["SETPOINT_AWAY_EXTRACT_FAN"]);
-    // console.log(this.registerValues["SETPOINT_HOME_SUPPLY_FAN"]+" "+this.registerValues["SETPOINT_HOME_EXTRACT_FAN"]);
-    // console.log(this.registerValues["SETPOINT_HIGH_SUPPLY_FAN"]+" "+this.registerValues["SETPOINT_HIGH_EXTRACT_FAN"]);
   }
 
   async updateFlexitValues() {
-		  requestId++;
+		 
 
-		  requestId %= 100;
+		  requestId %= 10000;
 
 
       var roomTemperatureOld = this.registerValues[this.propertyKey(ROOM_TEMPERATURE)];
       var ventilationModeOld =  this.registerValues[this.propertyKey(VENTILATION_MODE)];
 
-		 // if(requestId == 0 )  // every 100-time
-		 {
+		if(requestId % 100 == 0 || requestId < 5)  // every 100-time
+		{
 			 this.readHoldingFlexit(OPERATING_TIME_FILTER, this.toFloat);
 			 this.readHoldingFlexit(OPERATING_TIME_FILTER_FOR_REPLACEMENT, this.toFloat);
        this.registerValues[FILTER_REPLACEMENT_TIME_KEY] =  this.registerValues[this.propertyKey(OPERATING_TIME_FILTER_FOR_REPLACEMENT)] - this.registerValues[this.propertyKey(OPERATING_TIME_FILTER)];
@@ -355,49 +331,43 @@ propertyCapability(property) {
 			 this.readHoldingFlexit(SETPOINT_COOKER_HOOD_EXTRACT_FAN, this.toFloat);
 			 this.readHoldingFlexit(SETPOINT_FIREPLACE_SUPPLY_FAN, this.toFloat);
 			 this.readHoldingFlexit(SETPOINT_FIREPLACE_EXTRACT_FAN, this.toFloat); 
-     }
+    }
 
-		 // if(requestId % 10 == 0) //every 10-time
-		 {
+	  if(requestId % 10 == 0 || requestId < 5) //every 10-time
+		{
       this.readHoldingFlexit(COMFORT_MODE, this.toVentilationMode);
       this.readHoldingFlexit(ROOM_OPERATION_MODE, this.toVentilationMode);
-		 }
+		}
 
-		 this.readHoldingFlexit(SUPPLY_AIR_FAN_SPEED, this.toFloat);
-		 this.readHoldingFlexit(EXHAUST_AIR_FAN_SPEED, this.toFloat);
+		this.readHoldingFlexit(SUPPLY_AIR_FAN_SPEED, this.toFloat);
+		this.readHoldingFlexit(EXHAUST_AIR_FAN_SPEED, this.toFloat);
 
-		 this.readInputFlexit(SUPPLY_AIR_FAN_SPEED_FEEDBACK, this.toFloat);
-		 this.readInputFlexit(EXHAUST_AIR_FAN_SPEED_FEEDBACK, this.toFloat);
+		this.readInputFlexit(SUPPLY_AIR_FAN_SPEED_FEEDBACK, this.toFloat);
+		this.readInputFlexit(EXHAUST_AIR_FAN_SPEED_FEEDBACK, this.toFloat);
 
-	     this.readHoldingFlexit(ROTARY_HEAT_EXCHANGER_SPEED, this.toFloat);
+	  this.readHoldingFlexit(ROTARY_HEAT_EXCHANGER_SPEED, this.toFloat);
 
-		 this.readInputFlexit(SUPPLY_AIR_TEMPERATURE, this.toFloat1);
-		 this.readInputFlexit(EXHAUST_AIR_TEMPERATURE, this.toFloat1);
-		 this.readInputFlexit(EXTRACT_AIR_TEMPERATURE, this.toFloat1);
-		 this.readInputFlexit(OUTSIDE_AIR_TEMPERATURE, this.toFloat1);
-		 this.readInputFlexit(ROOM_TEMPERATURE, this.toFloat1);
-    
-
+		this.readInputFlexit(SUPPLY_AIR_TEMPERATURE, this.toFloat1);
+		this.readInputFlexit(EXHAUST_AIR_TEMPERATURE, this.toFloat1);
+		this.readInputFlexit(EXTRACT_AIR_TEMPERATURE, this.toFloat1);
+		this.readInputFlexit(OUTSIDE_AIR_TEMPERATURE, this.toFloat1);
+		this.readInputFlexit(ROOM_TEMPERATURE, this.toFloat1);
   
-		 this.readInputFlexit(VENTILATION_MODE, this.toVentilationMode);
+		this.readInputFlexit(VENTILATION_MODE, this.toVentilationMode);
    
-
-		  this.readHoldingFlexit(SETPOINT_HOME_TEMPERATURE, this.toFloat1);
-		  this.readHoldingFlexit(SETPOINT_AWAY_TEMPERATURE, this.toFloat1);
+		this.readHoldingFlexit(SETPOINT_HOME_TEMPERATURE, this.toFloat1);
+		this.readHoldingFlexit(SETPOINT_AWAY_TEMPERATURE, this.toFloat1);
 
 		 this.readHoldingFlexit(RAPID_VENTILATION_RUNTIME, this.toDirect);
 		 this.readHoldingFlexit(FIREPLACE_VENTILATION_RUNTIME, this.toDirect);
 		 this.readInputFlexit(REMAINING_TIME_OF_RAPID_VENTILATION, this.toFloat);
 		 this.readInputFlexit(REMAINING_TIME_OF_FIREPLACE_VENTILATION, this.toFloat);
 
-     if (this.registerValues[this.propertyKey(ROOM_TEMPERATURE)] != roomTemperatureOld) 
-     {
-      _roomTemperatureChanged.trigger();
-     }
-     if (this.registerValues[this.propertyKey(VENTILATION_MODE)] != ventilationModeOld) 
-     {
-      _ventilatiopnModeChanged.trigger();
-     }
+     if (this.registerValues[this.propertyKey(ROOM_TEMPERATURE)] != roomTemperatureOld) { _roomTemperatureChanged.trigger(); }  // Trigger flow
+     if (this.registerValues[this.propertyKey(VENTILATION_MODE)] != ventilationModeOld) { _ventilatiopnModeChanged.trigger(); } // Trigger flow
+
+
+     requestId++;
   }
 
   async setInitialValues() {
@@ -405,7 +375,6 @@ propertyCapability(property) {
     this.registerValues =		{FILTER_REPLACEMENT_TIME:0};
 
     PROPERTIES.forEach((item) => {
-      console.log(this.propertyKey(item) +" - " + this.propertyDefault(item));
       this.registerValues[this.propertyKey(item)] = this.propertyDefault(item);
     })
 
@@ -417,8 +386,6 @@ propertyCapability(property) {
     this.log('MyDevice has been initialized');
 
     await this.setInitialValues();
-
-	 // this._triggerTemporaryHigh = this.homey.flow.getDeviceTriggerCard("temporary_high");
 
     setInterval(this.updateCapabilitesFromRegister.bind(this), 5000);
 
@@ -449,13 +416,11 @@ propertyCapability(property) {
 
     socket.connect(options);
 
-    this.registerCapabilityListener('my_trigger_high', async value => {
-      await this.triggerActionFlexit(TRIGGER_HIGH);
-    });
-
     this.registerCapabilityListener('my_ventilation_mode', async value => {
       await this.triggerVentilationModeActionFlexit(value);
     });
+
+    //Flows
 
     const changeModeAction = this.homey.flow.getActionCard('change_mode');
     changeModeAction.registerRunListener(async (args, state) => {

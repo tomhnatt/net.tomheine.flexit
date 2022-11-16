@@ -131,6 +131,45 @@
 },
 
 {
+	"id": "change_setpoint_fans",
+  "title": {"en": "Change setpoint fan speeds for a certain ventilation mode" },
+  "titleFormatted": { "en": "Change setpoint fan speeds of ventilation mode [[type]] to supply [[fan1]] % and exhaust [[fan2]] %" },
+  
+  "args": [
+    {
+    "name": "fan1",
+    "type": "number",
+	  "title": {"en":"Supply fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    },
+    {
+    "name": "fan2",
+    "type": "number",
+	  "title": {"en":"Extract fan speed"},
+	  "min": 30,
+	  "max": 100,
+	  "step": 1,
+	  "placeholder": { "en": "In percent" }
+    },
+    {
+      "name": "type",
+      "type": "dropdown",
+      "title": {"en":"Fan speed mode"},
+      "values": [
+        { "id": "away", "label": { "en": "away" } },
+        { "id": "home", "label": { "en": "home" } },
+        { "id": "high", "label": { "en": "high" } },
+        { "id": "cooker_hood", "label": { "en": "cooker hood" } },
+        { "id": "fireplace", "label": { "en": "fireplace" } }
+      ]
+    }
+  ]
+},
+
+{
 	"id": "change_setpoint_fan_away",
   "title": {"en": "Change setpoint fan speeds AWAY" },
   "titleFormatted": { "en": "Change setpoint fan speeds away to supply [[fan1]] % and exhaust [[fan2]] %" },

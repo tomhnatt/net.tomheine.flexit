@@ -220,6 +220,87 @@
         ]
       },
       {
+        "id": "change_setpoint_fans",
+        "title": {
+          "en": "Change setpoint fan speeds for a certain ventilation mode"
+        },
+        "titleFormatted": {
+          "en": "Change setpoint fan speeds of ventilation mode [[type]] to supply [[fan1]] % and exhaust [[fan2]] %"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=flexitdriver"
+          },
+          {
+            "name": "fan1",
+            "type": "number",
+            "title": {
+              "en": "Supply fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          },
+          {
+            "name": "fan2",
+            "type": "number",
+            "title": {
+              "en": "Extract fan speed"
+            },
+            "min": 30,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "In percent"
+            }
+          },
+          {
+            "name": "type",
+            "type": "dropdown",
+            "title": {
+              "en": "Fan speed mode"
+            },
+            "values": [
+              {
+                "id": "away",
+                "label": {
+                  "en": "away"
+                }
+              },
+              {
+                "id": "home",
+                "label": {
+                  "en": "home"
+                }
+              },
+              {
+                "id": "high",
+                "label": {
+                  "en": "high"
+                }
+              },
+              {
+                "id": "cooker_hood",
+                "label": {
+                  "en": "cooker hood"
+                }
+              },
+              {
+                "id": "fireplace",
+                "label": {
+                  "en": "fireplace"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
         "id": "change_setpoint_fan_away",
         "title": {
           "en": "Change setpoint fan speeds AWAY"
@@ -434,7 +515,7 @@
   "drivers": [
     {
       "name": {
-        "en": "Flexit Aggregat"
+        "en": "Flexit Nordic S4"
       },
       "class": "other",
       "capabilities": [
@@ -530,9 +611,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 30,
       "max": 100,
@@ -547,9 +628,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 30,
       "max": 100,
@@ -564,9 +645,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 30,
       "max": 100,
@@ -581,9 +662,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 30,
       "max": 100,
@@ -598,9 +679,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 30,
       "max": 100,
@@ -615,9 +696,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 30,
       "max": 100,
@@ -632,9 +713,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 30,
       "max": 100,
@@ -649,9 +730,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 30,
       "max": 100,
@@ -666,9 +747,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 30,
       "max": 100,
@@ -681,24 +762,11 @@
       "title": {
         "en": "Exhaust air fan speed"
       },
-      "tokens": [
-        {
-          "name": "value",
-          "title": {
-            "en": "%",
-            "no": "%"
-          },
-          "example": {
-            "en": 42,
-            "no": 42
-          }
-        }
-      ],
       "uiComponent": "sensor",
       "getable": true,
       "setable": false,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 0,
       "max": 100,
@@ -732,10 +800,12 @@
       "getable": true,
       "setable": false,
       "units": {
-        "en": "C"
+        "en": "°C"
       },
       "min": -50,
       "max": 80,
+      "step": 1,
+      "decimals": 1,
       "insights": true,
       "icon": "/assets/exhaust.svg"
     },
@@ -748,10 +818,12 @@
       "getable": true,
       "setable": false,
       "units": {
-        "en": "C"
+        "en": "°C"
       },
       "min": -50,
       "max": 80,
+      "step": 0.1,
+      "decimals": 1,
       "insights": true,
       "icon": "/assets/extract.svg"
     },
@@ -762,12 +834,13 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": true,
+      "setable": false,
       "units": {
-        "en": " timer"
+        "en": "hours"
       },
       "min": 0,
       "max": 99990,
+      "step": 1,
       "insights": true,
       "icon": "/assets/airfilter.svg"
     },
@@ -778,9 +851,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " min"
+        "en": "min"
       },
       "min": 0,
       "max": 360,
@@ -797,10 +870,12 @@
       "getable": true,
       "setable": false,
       "units": {
-        "en": "C"
+        "en": "°C"
       },
       "min": -50,
       "max": 80,
+      "step": 0.1,
+      "decimals": 1,
       "insights": true,
       "icon": "/assets/outside.svg"
     },
@@ -813,7 +888,7 @@
       "getable": true,
       "setable": false,
       "units": {
-        "en": " min"
+        "en": "min"
       },
       "min": 0,
       "max": 360,
@@ -830,7 +905,7 @@
       "getable": true,
       "setable": false,
       "units": {
-        "en": " min"
+        "en": "min"
       },
       "min": 0,
       "max": 360,
@@ -847,7 +922,7 @@
       "getable": true,
       "setable": false,
       "units": {
-        "en": " min"
+        "en": "min"
       },
       "min": 0,
       "max": 360,
@@ -864,10 +939,11 @@
       "getable": true,
       "setable": false,
       "units": {
-        "en": "C"
+        "en": "°C"
       },
       "min": -50,
       "max": 80,
+      "step": 1,
       "insights": true,
       "icon": "/assets/room.svg"
     },
@@ -876,24 +952,11 @@
       "title": {
         "en": "Rotary heat exchanger speed"
       },
-      "tokens": [
-        {
-          "name": "value",
-          "title": {
-            "en": "%",
-            "no": "%"
-          },
-          "example": {
-            "en": 42,
-            "no": 42
-          }
-        }
-      ],
       "uiComponent": "sensor",
       "getable": true,
       "setable": false,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 0,
       "max": 100,
@@ -910,10 +973,11 @@
       "getable": true,
       "setable": true,
       "units": {
-        "en": "C"
+        "en": "°C"
       },
       "min": 10,
       "max": 30,
+      "step": 0.1,
       "decimals": 1,
       "insights": true,
       "icon": "/assets/temp.svg"
@@ -923,7 +987,7 @@
       "title": {
         "en": "Setpoint Home temperature"
       },
-      "uiComponent": "thermostat",
+      "uiComponent": "sensor",
       "getable": true,
       "setable": true,
       "units": {
@@ -945,7 +1009,7 @@
       "getable": true,
       "setable": false,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 0,
       "max": 100,
@@ -962,7 +1026,7 @@
       "getable": true,
       "setable": false,
       "units": {
-        "en": " rpm"
+        "en": "rpm"
       },
       "min": 0,
       "max": 18000,
@@ -979,10 +1043,12 @@
       "getable": true,
       "setable": false,
       "units": {
-        "en": "C"
+        "en": "°C"
       },
       "min": -50,
       "max": 80,
+      "step": 0.1,
+      "decimals": 1,
       "insights": true,
       "icon": "/assets/supply.svg"
     },

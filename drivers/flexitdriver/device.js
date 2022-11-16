@@ -460,10 +460,29 @@ propertyCapability(property) {
 	   device.changeSetpointFlexit(SETPOINT_AWAY_TEMPERATURE, args.temperature);
     });
 
+
+
+    const changeSetpointFansAction = this.homey.flow.getActionCard('change_setpoint_fans');
+    changeSetpointFansAction.registerRunListener(async (args, state) => {
+      device.log(`Flow: setpoint fan speeds changed for mode ${args.mode} Supply:${args.fan1} Extract:${args.fan2}`);
+      if(args.mode == "away")
+      device.changeSetpointFanFlexit(SETPOINT_AWAY_SUPPLY_FAN, SETPOINT_AWAY_EXTRACT_FAN, args.fan1, args.fan2);
+      else if(args.mode == "home")
+      device.changeSetpointFanFlexit(SETPOINT_HOME_SUPPLY_FAN, SETPOINT_HOME_EXTRACT_FAN, args.fan1, args.fan2);
+      else if(args.mode == "high")
+      device.changeSetpointFanFlexit(SETPOINT_HIGH_SUPPLY_FAN, SETPOINT_HIGH_EXTRACT_FAN, args.fan1, args.fan2);
+      else if(args.mode == "cooker_hood")
+      device.changeSetpointFanFlexit(SETPOINT_COOKER_HOOD_SUPPLY_FAN, SETPOINT_COOKER_HOOD_EXTRACT_FAN, args.fan1, args.fan2);
+      else if(args.mode == "fireplace")
+      device.changeSetpointFanFlexit(SETPOINT_FIREPLACE_SUPPLY_FAN, SETPOINT_FIREPLACE_EXTRACT_FAN, args.fan1, args.fan2);
+    });
+
+    //TODO: Remove the following 5 specific setpoint pairs?
+
     const changeSetpointFanAwayAction = this.homey.flow.getActionCard('change_setpoint_fan_away');
     changeSetpointFanAwayAction.registerRunListener(async (args, state) => {
       device.log(`Flow: setpoint away fan speeds changed: Supply:${args.fan1} Extract:${args.fan2}`);
-	   device.changeSetpointFanFlexit(SETPOINT_FAN_AWAY, args.fan1, args.fan2);
+      device.changeSetpointFanFlexit(SETPOINT_AWAY_SUPPLY_FAN, SETPOINT_AWAY_EXTRACT_FAN, args.fan1, args.fan2);
     });
 
     const changeSetpointFanHomeAction = this.homey.flow.getActionCard('change_setpoint_fan_home');

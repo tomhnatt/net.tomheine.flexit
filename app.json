@@ -506,23 +506,6 @@
     }
   ],
   "capabilities": {
-    "away_supply_fan_setpoint": {
-      "type": "number",
-      "title": {
-        "en": "Supply air fan speed"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": " %"
-      },
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "insights": true,
-      "icon": "/assets/supply.svg"
-    },
     "fan_setpoint_extract_away": {
       "type": "number",
       "title": {
@@ -530,9 +513,9 @@
       },
       "uiComponent": "sensor",
       "getable": true,
-      "setable": false,
+      "setable": true,
       "units": {
-        "en": " %"
+        "en": "%"
       },
       "min": 30,
       "max": 100,
@@ -680,23 +663,6 @@
       "type": "number",
       "title": {
         "en": "Home, supply fan setpoint"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": " %"
-      },
-      "min": 30,
-      "max": 100,
-      "step": 1,
-      "insights": true,
-      "icon": "/assets/supply.svg"
-    },
-    "fan_setpoint_suppy_away": {
-      "type": "number",
-      "title": {
-        "en": "Away, supply fan setpoint"
       },
       "uiComponent": "sensor",
       "getable": true,
@@ -957,14 +923,15 @@
       "title": {
         "en": "Setpoint Home temperature"
       },
-      "uiComponent": "sensor",
+      "uiComponent": "thermostat",
       "getable": true,
       "setable": true,
       "units": {
-        "en": "C"
+        "en": "°C"
       },
       "min": 10,
       "max": 30,
+      "step": 0.1,
       "decimals": 1,
       "insights": true,
       "icon": "/assets/temp.svg"

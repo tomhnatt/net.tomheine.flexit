@@ -7,7 +7,7 @@ TODO:
 - Forsøke rydde opp i behovet for key av alle egenskaper
 */
 
-const { Device } = require('homey');
+const Homey = require('homey');
 const Modbus = require('jsmodbus');
 const net = require('net');
 
@@ -52,11 +52,11 @@ const SETPOINT_AWAY_TEMPERATURE = [1163, 2, 'Setpoint away temperature', 'SETPOI
 const OPERATING_TIME_FILTER = [1271, 1, 'Operating time filter', 'OPERATING_TIME_FILTER',0,9999,0,"h",null];
 const OPERATING_TIME_FILTER_FOR_REPLACEMENT = [1269, 1, 'Operating time filter for replacement', 'OPERATING_TIME_FILTER_FOR_REPLACEMENT',0,9990,0,"h",null];
 
-const VENTILATION_MODE = [3034, 1, 'Heat recovery ventilation state', 'VENTILATION_MODE',1,7,3,null,'my_ventilation_mode'];
+const VENTILATION_MODE = [3034, 1, 'Heat recovery ventilation state', 'VENTILATION_MODE',1,7,3,null,null];
 
 //TODO: Needed????
-const COMFORT_MODE = [2040, 1, 'Comfort button', 'COMFORT_MODE',0,1,0,null];
-const ROOM_OPERATION_MODE = [2013, 1, 'Room operation mode', 'ROOM_OPERATION_MODE',0,1,0,null];
+const COMFORT_MODE = [2040, 1, 'Comfort button', 'COMFORT_MODE',0,1,0,null,null];
+const ROOM_OPERATION_MODE = [2013, 1, 'Room operation mode', 'ROOM_OPERATION_MODE',0,1,0,null,null];
 
 const RAPID_VENTILATION_RUNTIME = [1104, 1, 'Rapid ventilation runtime', 'RAPID_VENTILATION_RUNTIME',1,360,1,"min",null]; // NB står 1103 i manualen
 const FIREPLACE_VENTILATION_RUNTIME = [1106, 1, 'Fireplace ventilation runtime', 'FIREPLACE_VENTILATION_RUNTIME',0,360,0,"min",null]; // NB står 1105 i manualen
@@ -89,7 +89,9 @@ const ventilation_modes = ['unknown', 'off', 'away', 'home', 'high', 'fume_hood'
 
 const FILTER_REPLACEMENT_TIME_KEY = "FILTER_REPLACEMENT_TIME";
 
-class MyDevice extends Device {
+class MyDevice extends Homey.Device {
+
+ registerValues = {};
 
   /**
    * onInit is called when the device is initialized.
@@ -288,7 +290,9 @@ propertyCapability(property) {
     return ventilation_modes[mode];
   }
 
-  updateCapabilityFromRegisterValue(property) {
+  async updateCapabilityFromRegisterValue(property) {
+    //console.log(this.registerValues);
+    //console.log("hit"+"-"+property+"-"+this.registerValues[this.propertyKey(property)]);
     if (this.registerValues[this.propertyKey(property)] >= this.propertyMin(property)) //TODO: Add this:  && this.registerValues[this.propertyKey(property)] <= this.propertyMax(property))
     this.setCapabilityValue(this.propertyCapability(property), this.registerValues[this.propertyKey(property)]);
   }
@@ -297,11 +301,11 @@ propertyCapability(property) {
 
     PROPERTIES.forEach((item) => {
       if(this.propertyCapability(item) != null)
-      this.updateCapabilityFromRegisterValue(this.propertyKey(item));
+      this.updateCapabilityFromRegisterValue(item);
     })
   
     //Capabilities that has to be set manually
-    this.setCapabilityValue(this.propertyCapability(VENTILATION_MODE), this.translateToMode(this.registerValues[this.propertyKey(VENTILATION_MODE)]));
+    this.setCapabilityValue('my_ventilation_mode', this.translateToMode(this.registerValues[this.propertyKey(VENTILATION_MODE)]));
     this.setCapabilityValue('my_filter_replacement',  this.registerValues[FILTER_REPLACEMENT_TIME_KEY]);
 
   }
@@ -372,11 +376,13 @@ propertyCapability(property) {
 
   async setInitialValues() {
     
-    this.registerValues =		{FILTER_REPLACEMENT_TIME:0};
+    this.registerValues["FILTER_REPLACEMENT_TIME"] = 0;
 
     PROPERTIES.forEach((item) => {
       this.registerValues[this.propertyKey(item)] = this.propertyDefault(item);
     })
+
+    console.log (this.registerValues);
 
     this.updateCapabilitesFromRegister();
   }

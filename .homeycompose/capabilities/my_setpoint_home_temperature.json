@@ -4,9 +4,10 @@
 	  "uiComponent": "sensor",
 	  "getable": true,
 	  "setable": true,
-	  "units": { "en": "C" },
+	  "units": { "en": "°C" },
 	  "min": 10,
 	  "max":  30,
+	  "step": 0.1,
 	  "decimals": 1,
 	  "insights": true,
 	  "icon": "/assets/temp.svg"

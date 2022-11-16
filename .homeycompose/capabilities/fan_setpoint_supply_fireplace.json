@@ -3,7 +3,7 @@
 	  "title": { "en": "Fireplace, supply fan setpoint" },
 	  "uiComponent": "sensor",
 	  "getable": true,
-	  "setable": false,
+	  "setable": true,
 	  "units": { "en": " %" },
 	  "min": 30,
 	  "max": 100,

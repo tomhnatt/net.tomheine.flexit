@@ -4,9 +4,10 @@
 	  "uiComponent": "sensor",
 	  "getable": true,
 	  "setable": false,
-	  "units": { "en": "C" },
+	  "units": { "en": "°C" },
 	  "min": -50,
 	  "max":  80,
+	  "step": 1,
 	  "insights": true,
 	  "icon": "/assets/room.svg"
 }

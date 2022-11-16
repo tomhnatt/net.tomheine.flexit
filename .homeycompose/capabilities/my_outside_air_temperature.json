@@ -4,9 +4,11 @@
 	  "uiComponent": "sensor",
 	  "getable": true,
 	  "setable": false,
-	  "units": { "en": "C" },
+	  "units": { "en": "°C" },
 	  "min": -50,
 	  "max":  80,
+	  "step": 0.1,
+	  "decimals": 1,
 	  "insights": true,
 	  "icon": "/assets/outside.svg"
 }

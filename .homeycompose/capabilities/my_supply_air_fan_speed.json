@@ -4,7 +4,7 @@
 	  "uiComponent": "sensor",
 	  "getable": true,
 	  "setable": false,
-	  "units": { "en": " %" },
+	  "units": { "en": "%" },
 	  "min": 0,
 	  "max": 100,
 	  "step": 1,

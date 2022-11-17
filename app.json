@@ -29,10 +29,22 @@
   "flow": {
     "triggers": [
       {
-        "id": "ventilation_mode_changed",
+        "id": "my_ventilation_mode_changed",
         "title": {
           "en": "Ventilation mode changed"
         },
+        "tokens": [
+          {
+            "name": "my_ventilation_mode",
+            "type": "string",
+            "title": {
+              "en": "Ventilation mode"
+            },
+            "example": {
+              "en": "Home"
+            }
+          }
+        ],
         "hint": {
           "en": "When ventilation mode changes"
         },
@@ -45,10 +57,22 @@
         ]
       },
       {
-        "id": "room_temperature_changed",
+        "id": "my_room_temperature_changed",
         "title": {
           "en": "Room temperature changed"
         },
+        "tokens": [
+          {
+            "name": "my_room_temperature",
+            "type": "number",
+            "title": {
+              "en": "Room temperature"
+            },
+            "example": {
+              "en": "21.9"
+            }
+          }
+        ],
         "hint": {
           "en": "When room temperature changes"
         },
@@ -139,6 +163,12 @@
               "en": "Mode"
             },
             "values": [
+              {
+                "id": "stop",
+                "label": {
+                  "en": "stop"
+                }
+              },
               {
                 "id": "away",
                 "label": {
@@ -299,216 +329,6 @@
             ]
           }
         ]
-      },
-      {
-        "id": "change_setpoint_fan_away",
-        "title": {
-          "en": "Change setpoint fan speeds AWAY"
-        },
-        "titleFormatted": {
-          "en": "Change setpoint fan speeds away to supply [[fan1]] % and exhaust [[fan2]] %"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=flexitdriver"
-          },
-          {
-            "name": "fan1",
-            "type": "number",
-            "title": {
-              "en": "Supply fan speed"
-            },
-            "min": 30,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "In percent"
-            }
-          },
-          {
-            "name": "fan2",
-            "type": "number",
-            "title": {
-              "en": "Extract fan speed"
-            },
-            "min": 30,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "In percent"
-            }
-          }
-        ]
-      },
-      {
-        "id": "change_setpoint_fan_home",
-        "title": {
-          "en": "Change setpoint fan speeds HOME"
-        },
-        "titleFormatted": {
-          "en": "Change setpoint fan speeds home to supply [[fan1]] % and exhaust [[fan2]] %"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=flexitdriver"
-          },
-          {
-            "name": "fan1",
-            "type": "number",
-            "title": {
-              "en": "Supply fan speed"
-            },
-            "min": 30,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "In percent"
-            }
-          },
-          {
-            "name": "fan2",
-            "type": "number",
-            "title": {
-              "en": "Extract fan speed"
-            },
-            "min": 30,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "In percent"
-            }
-          }
-        ]
-      },
-      {
-        "id": "change_setpoint_fan_high",
-        "title": {
-          "en": "Change setpoint fan speeds HIGH"
-        },
-        "titleFormatted": {
-          "en": "Change setpoint fan speeds high to supply [[fan1]] % and exhaust [[fan2]] %"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=flexitdriver"
-          },
-          {
-            "name": "fan1",
-            "type": "number",
-            "title": {
-              "en": "Supply fan speed"
-            },
-            "min": 30,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "In percent"
-            }
-          },
-          {
-            "name": "fan2",
-            "type": "number",
-            "title": {
-              "en": "Extract fan speed"
-            },
-            "min": 30,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "In percent"
-            }
-          }
-        ]
-      },
-      {
-        "id": "change_setpoint_fan_cooker_hood",
-        "title": {
-          "en": "Change setpoint fan speeds COOKER HOOD"
-        },
-        "titleFormatted": {
-          "en": "Change setpoint fan speeds cooker hood to supply [[fan1]] % and exhaust [[fan2]] %"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=flexitdriver"
-          },
-          {
-            "name": "fan1",
-            "type": "number",
-            "title": {
-              "en": "Supply fan speed"
-            },
-            "min": 30,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "In percent"
-            }
-          },
-          {
-            "name": "fan2",
-            "type": "number",
-            "title": {
-              "en": "Extract fan speed"
-            },
-            "min": 30,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "In percent"
-            }
-          }
-        ]
-      },
-      {
-        "id": "change_setpoint_fan_fireplace",
-        "title": {
-          "en": "Change setpoint fan speeds FIREPLACE"
-        },
-        "titleFormatted": {
-          "en": "Change setpoint fan speeds fireplace to supply [[fan1]] % and exhaust [[fan2]] %"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=flexitdriver"
-          },
-          {
-            "name": "fan1",
-            "type": "number",
-            "title": {
-              "en": "Supply fan speed"
-            },
-            "min": 30,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "In percent"
-            }
-          },
-          {
-            "name": "fan2",
-            "type": "number",
-            "title": {
-              "en": "Extract fan speed"
-            },
-            "min": 30,
-            "max": 100,
-            "step": 1,
-            "placeholder": {
-              "en": "In percent"
-            }
-          }
-        ]
       }
     ]
   },
@@ -542,7 +362,11 @@
         "fan_setpoint_supply_cooker_hood",
         "fan_setpoint_extract_cooker_hood",
         "fan_setpoint_supply_fireplace",
-        "fan_setpoint_extract_fireplace"
+        "fan_setpoint_extract_fireplace",
+        "my_remaning_time_of_rapid_ventilation",
+        "my_remaning_time_of_fireplace_ventilation",
+        "my_rapid_ventilation_runtime",
+        "my_fireplace_ventilation_runtime"
       ],
       "platforms": [
         "local"
@@ -859,7 +683,7 @@
       "max": 360,
       "step": 1,
       "insights": true,
-      "icon": "/assets/exhaust.svg"
+      "icon": "/assets/clock.svg"
     },
     "my_outside_air_temperature": {
       "type": "number",
@@ -894,7 +718,7 @@
       "max": 360,
       "step": 1,
       "insights": true,
-      "icon": "/assets/exhaust.svg"
+      "icon": "/assets/clock.svg"
     },
     "my_remaning_time_of_fireplace_ventilation": {
       "type": "number",
@@ -911,7 +735,7 @@
       "max": 360,
       "step": 1,
       "insights": true,
-      "icon": "/assets/exhaust.svg"
+      "icon": "/assets/clock.svg"
     },
     "my_remaning_time_of_rapid_ventilation": {
       "type": "number",
@@ -928,7 +752,7 @@
       "max": 360,
       "step": 1,
       "insights": true,
-      "icon": "/assets/exhaust.svg"
+      "icon": "/assets/clock.svg"
     },
     "my_room_temperature": {
       "type": "number",
@@ -1065,9 +889,9 @@
           }
         },
         {
-          "id": "off",
+          "id": "stop",
           "title": {
-            "en": "Off"
+            "en": "Stop"
           }
         },
         {
@@ -1089,9 +913,9 @@
           }
         },
         {
-          "id": "fume_hood",
+          "id": "cooker_hood",
           "title": {
-            "en": "Fume hood"
+            "en": "Cooker hood"
           }
         },
         {

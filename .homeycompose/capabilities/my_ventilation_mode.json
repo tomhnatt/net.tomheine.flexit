@@ -9,9 +9,9 @@
 			}
 		},
 		{
-			"id": "off",
+			"id": "stop",
 			"title": {
-			"en": "Off"
+			"en": "Stop"
 			}
 		},
 		{
@@ -33,9 +33,9 @@
 			}
 		},
 		{
-			"id": "fume_hood",
+			"id": "cooker_hood",
 			"title": {
-				"en": "Fume hood"
+				"en": "Cooker hood"
 			}
 		},
 		{

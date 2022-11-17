@@ -9,5 +9,5 @@
 	  "max": 360,
 	  "step": 1,
 	  "insights": true,
-	  "icon": "/assets/exhaust.svg"
+	  "icon": "/assets/clock.svg"
 }

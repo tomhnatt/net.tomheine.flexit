@@ -10,6 +10,7 @@ TODO:
 const Homey = require('homey');
 const Modbus = require('jsmodbus');
 const net = require('net');
+const {Log} = require('homey-log');
 
 const socket = new net.Socket();
 const client = new Modbus.client.TCP(socket, 1);
@@ -22,11 +23,11 @@ let requestId = 0;
 
 
 //TRIGGERS
-const TRIGGER_TEMPORARY_HIGH = [3006, 2, 'Temporary rapid ventilation', 'TRIGGER_TEMPORARY_HIGH'];
-const CANCEL_TEMPORARY_HIGH = [3006, 1, 'Temporary rapid ventilation - cancellation', 'CANCEL_TEMPORARY_HIGH'];  //TODO: Never used
+const TRIGGER_TEMPORARY_HIGH = [3006, 2, 'Temporary rapid ventilation', 'TRIGGER_TEMPORARY_HIGH',];
 const TRIGGER_TEMPORARY_FIREPLACE = [3007, 2, 'Trigger temporary fireplace ventilation', 'TRIGGER_TEMPORARY_FIREPLACE'];
 const TRIGGER_HOME = [2013, 3, 'Trigger home ventilation', 'TRIGGER_HOME'];
 const TRIGGER_AWAY = [2013, 2, 'Trigger away ventilation', 'TRIGGER_AWAY'];
+const TRIGGER_STOP = [2013, 1, 'Trigger away ventilation', 'TRIGGER_STOP'];
 const TRIGGER_HIGH = [2013, 4, 'Trigger high ventilation', 'TRIGGER_HIGH'];
 // const TRIGGER_FUME_HOOD = [2013,5,"Trigger fume hood ventilation","TRIGGER_FUME_HOOD"];
 
@@ -58,10 +59,10 @@ const VENTILATION_MODE = [3034, 1, 'Heat recovery ventilation state', 'VENTILATI
 const COMFORT_MODE = [2040, 1, 'Comfort button', 'COMFORT_MODE',0,1,0,null,null];
 const ROOM_OPERATION_MODE = [2013, 1, 'Room operation mode', 'ROOM_OPERATION_MODE',0,1,0,null,null];
 
-const RAPID_VENTILATION_RUNTIME = [1104, 1, 'Rapid ventilation runtime', 'RAPID_VENTILATION_RUNTIME',1,360,1,"min",null]; // NB står 1103 i manualen
-const FIREPLACE_VENTILATION_RUNTIME = [1106, 1, 'Fireplace ventilation runtime', 'FIREPLACE_VENTILATION_RUNTIME',0,360,0,"min",null]; // NB står 1105 i manualen
-const REMAINING_TIME_OF_RAPID_VENTILATION = [1035, 2, 'Remaining time of rapid ventilation', 'REMAINING_TIME_OF_RAPID_VENTILATION',0,360,0,"min",null];
-const REMAINING_TIME_OF_FIREPLACE_VENTILATION = [1037, 2, 'Remaining time of fireplace ventilation', 'REMAINING_TIME_OF_FIREPLACE_VENTILATION',0,360,0,"min",null];
+const RAPID_VENTILATION_RUNTIME = [1104, 1, 'Rapid ventilation runtime', 'RAPID_VENTILATION_RUNTIME',1,360,1,"min","my_rapid_ventilation_runtime"]; // NB står 1103 i manualen
+const FIREPLACE_VENTILATION_RUNTIME = [1106, 1, 'Fireplace ventilation runtime', 'FIREPLACE_VENTILATION_RUNTIME',0,360,0,"min","my_fireplace_ventilation_runtime"]; // NB står 1105 i manualen
+const REMAINING_TIME_OF_RAPID_VENTILATION = [1035, 2, 'Remaining time of rapid ventilation', 'REMAINING_TIME_OF_RAPID_VENTILATION',0,360,0,"min","my_remaning_time_of_rapid_ventilation"];
+const REMAINING_TIME_OF_FIREPLACE_VENTILATION = [1037, 2, 'Remaining time of fireplace ventilation', 'REMAINING_TIME_OF_FIREPLACE_VENTILATION',0,360,0,"min","my_remaning_time_of_fireplace_ventilation"];
 
 const SETPOINT_AWAY_SUPPLY_FAN = [1021, 2, 'Setpoint Away Supply Fan', 'SETPOINT_AWAY_SUPPLY_FAN',30,100,30,"%","fan_setpoint_supply_away"];
 const SETPOINT_AWAY_EXTRACT_FAN = [1023, 2, 'Setpoint Away Extract Fan', 'SETPOINT_AWAY_EXTRACT_FAN',30,100,30,"%","fan_setpoint_extract_away"];
@@ -85,7 +86,18 @@ const PROPERTIES = [SUPPLY_AIR_FAN_SPEED, EXHAUST_AIR_FAN_SPEED, SUPPLY_AIR_FAN_
                     RAPID_VENTILATION_RUNTIME, FIREPLACE_VENTILATION_RUNTIME, REMAINING_TIME_OF_RAPID_VENTILATION, REMAINING_TIME_OF_FIREPLACE_VENTILATION, 
                     SETPOINT_AWAY_SUPPLY_FAN, SETPOINT_AWAY_EXTRACT_FAN, SETPOINT_HOME_SUPPLY_FAN, SETPOINT_HOME_EXTRACT_FAN , SETPOINT_HIGH_SUPPLY_FAN, SETPOINT_HIGH_EXTRACT_FAN, SETPOINT_COOKER_HOOD_SUPPLY_FAN,SETPOINT_COOKER_HOOD_EXTRACT_FAN, SETPOINT_FIREPLACE_SUPPLY_FAN, SETPOINT_FIREPLACE_EXTRACT_FAN ]
 
-const ventilation_modes = ['unknown', 'off', 'away', 'home', 'high', 'fume_hood', 'fireplace', 'temporary_high'];
+
+const VENTILATION_MODE_UÆNKNOWN = 0;
+const VENTILATION_MODE_OFF = 1
+const VENTILATION_MODE_AWAY = 2;
+const VENTILATION_MODE_HOME = 3;
+const VENTILATION_MODE_HIGH = 4;
+const VENTILATION_MODE_COOKER_HOOD = 5;
+const VENTILATION_MODE_TEMPORARY_FIREPLACE = 6;
+const VENTILATION_MODE_TEMPORARY_HIGH = 7;
+
+
+const ventilation_modes = ['unknown', 'off','away', 'home', 'high', 'cooker_hood', 'fireplace', 'temporary_high'];
 
 const FILTER_REPLACEMENT_TIME_KEY = "FILTER_REPLACEMENT_TIME";
 
@@ -99,45 +111,54 @@ class MyDevice extends Homey.Device {
 
   async changeSetpointFanFlexit(setpoint1, setpoint2, fan1, fan2) {
     // TODO: This creates an error and no output!
-    this.log('hit');
-    console.log('hit');
     const device = this;
 
 	   client.writeMultipleRegisters(setpoint1[0], [this.fromFloat(fan1)[0], 0])
 		 .then(resp => {
         device.log(resp);
+        device.homeyLog.captureMessage(resp, "debug");
 		 }).catch(function() {
         device.error(arguments);
+        device.homeyLog.captureException(arguments);
 		 });
 
 		 client.writeMultipleRegisters(setpoint2[0], [this.fromFloat(fan2)[0], 0])
 		 .then(resp => {
         device.log(resp);
+        device.homeyLog.captureMessage(resp, "debug");
 		 }).catch(function() {
         device.error(arguments);
+        device.homeyLog.captureException(arguments);
 		 });
   }
 
-  async changeSetpointFlexit(mode, temperature) {
+  async changeSetpointTemperatureFlexit(mode, temperature) {
+
+
+    const device = this;
+
 	  client.writeMultipleRegisters(mode[0], [this.fromFloat(temperature)[0], 0])
       .then(resp => {
         console.log(resp);
+        device.homeyLog.captureMessage(resp, "debug");
       }).catch(function() {
         console.error(arguments);
+        device.homeyLog.captureException(arguments);
       });
   }
 
+  //TODO:  Not used - remove?
   async setComfortModeFlexit() {
 	   // TODO: Reconnect https://github.com/Cloud-Automation/node-modbus/blob/v4.0-dev/examples/javascript/tcp/Reconnect.js
-
-	  this.log('Activation comfort mode: 1');
 	   const device = this;
 
     client.writeSingleRegister(2040, 1)
       .then(resp => {
         console.log(resp);
+        device.homeyLog.captureMessage(resp, "debug");
       }).catch(function() {
         console.error(arguments);
+        device.homeyLog.captureException(arguments);
       });
   }
 
@@ -149,8 +170,10 @@ class MyDevice extends Homey.Device {
     client.writeMultipleRegisters(mode[0] - 1, [0, duration]) // -1 her fordi selve verien lå i et høyere register og det ble laget i const over.
       .then(resp => {
         console.log(resp);
+        device.homeyLog.captureMessage(resp, "debug");
       }).catch(function() {
         console.error(arguments);
+        device.homeyLog.captureException(arguments);
       });
   }
 
@@ -163,78 +186,88 @@ class MyDevice extends Homey.Device {
     client.writeSingleRegister(action[0], action[1])
       .then(resp => {
         console.log(resp);
-        // socket.end()
+        device.homeyLog.captureMessage(resp, "debug");
       }).catch(function() {
         console.error(arguments);
-        // socket.end()
+        device.homeyLog.captureException(arguments);
       });
 
-    this.registerValues[this.propertyKey(VENTILATION_MODE)] = action[1]; // TODO:For å hurtig oppdatere modus i visningen inntil det leses igjen.  Bør heller trigge lesing?
+     
+      
   }
 
   async cancelTemporary() {
-	   // TODO:if temporary high, run temporary high again
-	   // TODO: if fireplace, run fireplace again
-
+    if(this.registerValues[this.propertyKey(VENTILATION_MODE)] == VENTILATION_MODE_TEMPORARY_HIGH)  // temporary high
+      await this.triggerActionFlexit(TRIGGER_TEMPORARY_HIGH);
+    if(this.registerValues[this.propertyKey(VENTILATION_MODE)] == VENTILATION_MODE_TEMPORARY_FIREPLACE)  // temporary fireplace
+      await this.triggerActionFlexit(TRIGGER_TEMPORARY_FIREPLACE); //TODO:  This has to complete betfore next step in triggerVentilationModeActionFlexit
   }
 
   async triggerVentilationModeActionFlexit(mode) {
 	   this.log(`Trigger Venitlation Mode: ${mode}`);
 
+     //TODO:  Include this: device.setVentilationRuntime(RAPID_VENTILATION_RUNTIME, args.duration);?
+
 	   if (mode == 'temporary_high') {
+      await this.cancelTemporary();
 		   await this.triggerActionFlexit(TRIGGER_TEMPORARY_HIGH);
+       this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_TEMPORARY_HIGH; 
 	   } else if (mode == 'fireplace') {
+      await this.cancelTemporary();
 		   await this.triggerActionFlexit(TRIGGER_TEMPORARY_FIREPLACE);
+       this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_TEMPORARY_FIREPLACE; 
+	   } else if (mode == 'stop') {
+      await this.cancelTemporary();
+		   await this.triggerActionFlexit(TRIGGER_STOP);
+       this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_STOP; 
 	   } else if (mode == 'home') {
       await this.cancelTemporary();
 		   await this.triggerActionFlexit(TRIGGER_HOME);
+       this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_HOME; 
 	   } else if (mode == 'away') {
 		  await this.cancelTemporary();
 		   await this.triggerActionFlexit(TRIGGER_AWAY);
+       this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_TEMPORARY_AWAY; 
 	   } else if (mode == 'high') {
 		  await this.cancelTemporary();
 		   await this.triggerActionFlexit(TRIGGER_HIGH);
-	   } else if (mode == 'fume_hood') {
-		  // await this.setComfortModeFlexit();
-		   // await this.triggerActionFlexit(TRIGGER_FUME_HOOD);
-
-		   // TODO:  Gjør noe med dette....
+       this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_HIGH; 
+	   } else if (mode == 'cooker_hood') {
+        console.log("Ventilation modde cooker hood not supported. Starting Temprorary Fireplace");
+        await this.triggerActionFlexit(TRIGGER_TEMPORARY_FIREPLACE);
+        this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_TEMPORARY_FIREPLACE; 
+		   // TODO:  Find a way to implement...
 	   }
 
-	    const tokens = { new_mode: mode }; // for example 3
-    const state = { }; // for example "Amsterdam"
-
-	   this._ventilationModeChanged
-      .trigger(this, tokens, state)
-      .then(this.log)
-      .catch(this.error);
-
-      this._roomTemperatureChanged
-      .trigger(this, tokens, state)
-      .then(this.log)
-      .catch(this.error);
+     this.updateCapabilitesFromRegister();
   }
 
   async readHoldingFlexit(register, prosessing) {
 	    // TODO: Reconnect
 
 	    // this.log("Read holding: " + register[2]);
-    const d = this;
+    const device = this;
     client.readHoldingRegisters(register[0], register[1]).then(resp => {
-      d.registerValues[register[3]] = prosessing(resp.response.body._valuesAsArray);
+      device.registerValues[register[3]] = prosessing(resp.response.body._valuesAsArray);
       // d.log("Value of holding " + register[2] + ": " + d.registerValues[register[3]] );
-    }, console.error);
+    }, function (err) {
+      console.error(err);
+      device.homeyLog.captureException(err.originalError || err);
+    }); 
   }
 
   async readInputFlexit(register, prosessing) {
 	    // TODO: Reconnect
 
 	    // this.log("Read input: " + register[2]);
-    const d = this;
+    const device = this;
     client.readInputRegisters(register[0], register[1]).then(resp => {
-      d.registerValues[register[3]] = prosessing(resp.response.body._valuesAsArray);
+      device.registerValues[register[3]] = prosessing(resp.response.body._valuesAsArray);
       // d.log("Value of input " + register[2] + ": " + d.registerValues[register[3]] );
-    }, console.error);
+    }, function (err) {
+      console.error(err);
+      device.homeyLog.captureException(err.originalError || err);
+    });  
   }
 
 propertyKey(property) {
@@ -316,8 +349,6 @@ propertyCapability(property) {
 		  requestId %= 10000;
 
 
-      var roomTemperatureOld = this.registerValues[this.propertyKey(ROOM_TEMPERATURE)];
-      var ventilationModeOld =  this.registerValues[this.propertyKey(VENTILATION_MODE)];
 
 		if(requestId % 100 == 0 || requestId < 5)  // every 100-time
 		{
@@ -367,10 +398,6 @@ propertyCapability(property) {
 		 this.readInputFlexit(REMAINING_TIME_OF_RAPID_VENTILATION, this.toFloat);
 		 this.readInputFlexit(REMAINING_TIME_OF_FIREPLACE_VENTILATION, this.toFloat);
 
-     if (this.registerValues[this.propertyKey(ROOM_TEMPERATURE)] != roomTemperatureOld) { _roomTemperatureChanged.trigger(); }  // Trigger flow
-     if (this.registerValues[this.propertyKey(VENTILATION_MODE)] != ventilationModeOld) { _ventilatiopnModeChanged.trigger(); } // Trigger flow
-
-
      requestId++;
   }
 
@@ -390,6 +417,9 @@ propertyCapability(property) {
 
   async onInit() {
     this.log('MyDevice has been initialized');
+
+    this.homeyLog = new Log({ homey: this.homey });
+    this.homeyLog.captureMessage("MyDevice has been initialized", "debug");
 
     await this.setInitialValues();
 
@@ -451,13 +481,13 @@ propertyCapability(property) {
     const changeSetpointHomeAction = this.homey.flow.getActionCard('change_setpoint_home');
     changeSetpointHomeAction.registerRunListener(async (args, state) => {
       device.log(`Flow: setpoint home changed${args.temperature}`);
-	   device.changeSetpointFlexit(SETPOINT_HOME_TEMPERATURE, args.temperature);
+	   device.changeSetpointTemperatureFlexit(SETPOINT_HOME_TEMPERATURE, args.temperature);
     });
 
     const changeSetpointAwayAction = this.homey.flow.getActionCard('change_setpoint_away');
     changeSetpointAwayAction.registerRunListener(async (args, state) => {
       device.log(`Flow: setpoint away changed${args.temperature}`);
-	   device.changeSetpointFlexit(SETPOINT_AWAY_TEMPERATURE, args.temperature);
+	   device.changeSetpointTemperatureFlexit(SETPOINT_AWAY_TEMPERATURE, args.temperature);
     });
 
 
@@ -477,40 +507,11 @@ propertyCapability(property) {
       device.changeSetpointFanFlexit(SETPOINT_FIREPLACE_SUPPLY_FAN, SETPOINT_FIREPLACE_EXTRACT_FAN, args.fan1, args.fan2);
     });
 
-    //TODO: Remove the following 5 specific setpoint pairs?
+    // TODO : Should not be needed (automatic update of change flows: https://apps.developer.homey.app/the-basics/flow#custom-capability-changed)
 
-    const changeSetpointFanAwayAction = this.homey.flow.getActionCard('change_setpoint_fan_away');
-    changeSetpointFanAwayAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: setpoint away fan speeds changed: Supply:${args.fan1} Extract:${args.fan2}`);
-      device.changeSetpointFanFlexit(SETPOINT_AWAY_SUPPLY_FAN, SETPOINT_AWAY_EXTRACT_FAN, args.fan1, args.fan2);
-    });
 
-    const changeSetpointFanHomeAction = this.homey.flow.getActionCard('change_setpoint_fan_home');
-    changeSetpointFanHomeAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: setpoint home fan speeds changed: Supply:${args.fan1} Extract:${args.fan2}`);
-	   device.changeSetpointFanFlexit(SETPOINT_HOME_SUPPLY_FAN, SETPOINT_HOME_EXTRACT_FAN, args.fan1, args.fan2);
-    });
-
-    const changeSetpointFanHighAction = this.homey.flow.getActionCard('change_setpoint_fan_high');
-    changeSetpointFanHighAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: setpoint high fan speeds changed: Supply:${args.fan1} Extract:${args.fan2}`);
-	   device.changeSetpointFanFlexit(SETPOINT_HIGH_SUPPLY_FAN, SETPOINT_HIGH_EXTRACT_FAN, args.fan1, args.fan2);
-    });
-
-    const changeSetpointFanCookerHoodAction = this.homey.flow.getActionCard('change_setpoint_fan_cooker_hood');
-    changeSetpointFanCookerHoodAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: setpoint cooker hood fan speeds changed: Supply:${args.fan1} Extract:${args.fan2}`);
-	   device.changeSetpointFanFlexit(SETPOINT_COOKER_HOOD_SUPPLY_FAN, SETPOINT_COOKER_HOOD_EXTRACT_FAN, args.fan1, args.fan2);
-    });
-
-    const changeSetpointFanFirpelaceAction = this.homey.flow.getActionCard('change_setpoint_fan_fireplace');
-    changeSetpointFanFirpelaceAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: setpoint fireplace fan speeds changed: Supply:${args.fan1} Extract:${args.fan2}`);
-	   device.changeSetpointFanFlexit(SETPOINT_FIREPLACE_SUPPLY_FAN, SETPOINT_FIREPLACE_EXTRACT_FAN, args.fan1, args.fan2);
-    });
-
-    this._ventilationModeChanged = this.homey.flow.getDeviceTriggerCard('ventilation_mode_changed');
-    this._roomTemperatureChanged = this.homey.flow.getDeviceTriggerCard('room_temperature_changed');
+    /*this._ventilationModeChanged = this.homey.flow.getDeviceTriggerCard('ventilation_mode_changed');
+    this._roomTemperatureChanged = this.homey.flow.getDeviceTriggerCard('room_temperature_changed');*/
 
     /* DeviceApi.on('state-changed', (value) => {
       this.setCapabilityValue('my_supply_air_fan_speed', value).catch(this.error);

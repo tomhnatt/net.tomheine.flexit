@@ -4,7 +4,8 @@
   },
   "class": "other",
   "capabilities": ["my_supply_air_fan_speed","my_exhaust_air_fan_speed","my_supply_air_temperature","my_exhaust_air_temperature","my_extract_air_temperature","my_outside_air_temperature","my_room_temperature","my_ventilation_mode","my_setpoint_home_temperature","my_setpoint_away_temperature","my_supply_air_fan_speed_feedback","my_exhaust_air_fan_speed_feedback","my_rotary_heat_exchanger_speed","my_filter_replacement",
-      "fan_setpoint_supply_away","fan_setpoint_extract_away","fan_setpoint_supply_home","fan_setpoint_extract_home","fan_setpoint_supply_high","fan_setpoint_extract_high","fan_setpoint_supply_cooker_hood","fan_setpoint_extract_cooker_hood","fan_setpoint_supply_fireplace","fan_setpoint_extract_fireplace"],
+      "fan_setpoint_supply_away","fan_setpoint_extract_away","fan_setpoint_supply_home","fan_setpoint_extract_home","fan_setpoint_supply_high","fan_setpoint_extract_high","fan_setpoint_supply_cooker_hood","fan_setpoint_extract_cooker_hood","fan_setpoint_supply_fireplace","fan_setpoint_extract_fireplace",
+      "my_remaning_time_of_rapid_ventilation","my_remaning_time_of_fireplace_ventilation","my_rapid_ventilation_runtime","my_fireplace_ventilation_runtime"],
   "platforms": ["local"],
   "connectivity": ["lan"],
   "pair": [

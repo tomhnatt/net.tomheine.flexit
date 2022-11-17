@@ -6,11 +6,18 @@
   
   {
 	  
-   "id": "ventilation_mode_changed",  
+   "id": "my_ventilation_mode_changed",  
   "title": {
     "en": "Ventilation mode changed"
-  }
-	,
+  },
+  "tokens": [
+    {
+      "name": "my_ventilation_mode",
+      "type": "string",
+      "title": { "en": "Ventilation mode" },
+      "example": { "en": "Home" }
+    }
+  ],
   "hint": {
     "en": "When ventilation mode changes"
   }
@@ -18,10 +25,19 @@
 
 {
 	  
-  "id": "room_temperature_changed",  
+  "id": "my_room_temperature_changed",  
  "title": {
    "en": "Room temperature changed"
  },
+ "tokens": [
+   {
+     "name": "my_room_temperature",
+     "type": "number",
+     "title": { "en": "Room temperature" },
+     "example": { "en": "21.9" }
+   }
+ ]
+ ,
  "hint": {
    "en": "When room temperature changes"
  }
@@ -86,6 +102,7 @@
       "type": "dropdown",
 	  "title": {"en":"Mode"},
 	  "values": [
+        { "id": "stop", "label": { "en": "stop" } },
         { "id": "away", "label": { "en": "away" } },
         { "id": "home", "label": { "en": "home" } },
         { "id": "high", "label": { "en": "high" } }
@@ -165,143 +182,6 @@
         { "id": "cooker_hood", "label": { "en": "cooker hood" } },
         { "id": "fireplace", "label": { "en": "fireplace" } }
       ]
-    }
-  ]
-},
-
-{
-	"id": "change_setpoint_fan_away",
-  "title": {"en": "Change setpoint fan speeds AWAY" },
-  "titleFormatted": { "en": "Change setpoint fan speeds away to supply [[fan1]] % and exhaust [[fan2]] %" },
-  
-  "args": [
-    {
-    "name": "fan1",
-    "type": "number",
-	  "title": {"en":"Supply fan speed"},
-	  "min": 30,
-	  "max": 100,
-	  "step": 1,
-	  "placeholder": { "en": "In percent" }
-    },
-    {
-    "name": "fan2",
-    "type": "number",
-	  "title": {"en":"Extract fan speed"},
-	  "min": 30,
-	  "max": 100,
-	  "step": 1,
-	  "placeholder": { "en": "In percent" }
-    }
-  ]
-}
-
-,
-
-{
-	"id": "change_setpoint_fan_home",
-  "title": {"en": "Change setpoint fan speeds HOME" },
-  "titleFormatted": { "en": "Change setpoint fan speeds home to supply [[fan1]] % and exhaust [[fan2]] %" },
-  
-  "args": [
-    {
-    "name": "fan1",
-    "type": "number",
-	  "title": {"en":"Supply fan speed"},
-	  "min": 30,
-	  "max": 100,
-	  "step": 1,
-	  "placeholder": { "en": "In percent" }
-    },
-    {
-    "name": "fan2",
-    "type": "number",
-	  "title": {"en":"Extract fan speed"},
-	  "min": 30,
-	  "max": 100,
-	  "step": 1,
-	  "placeholder": { "en": "In percent" }
-    }
-  ]
-},
-
-{
-	"id": "change_setpoint_fan_high",
-  "title": {"en": "Change setpoint fan speeds HIGH" },
-  "titleFormatted": { "en": "Change setpoint fan speeds high to supply [[fan1]] % and exhaust [[fan2]] %" },
-  
-  "args": [
-    {
-    "name": "fan1",
-    "type": "number",
-	  "title": {"en":"Supply fan speed"},
-	  "min": 30,
-	  "max": 100,
-	  "step": 1,
-	  "placeholder": { "en": "In percent" }
-    },
-    {
-    "name": "fan2",
-    "type": "number",
-	  "title": {"en":"Extract fan speed"},
-	  "min": 30,
-	  "max": 100,
-	  "step": 1,
-	  "placeholder": { "en": "In percent" }
-    }
-  ]
-},
-
-{
-	"id": "change_setpoint_fan_cooker_hood",
-  "title": {"en": "Change setpoint fan speeds COOKER HOOD" },
-  "titleFormatted": { "en": "Change setpoint fan speeds cooker hood to supply [[fan1]] % and exhaust [[fan2]] %" },
-  
-  "args": [
-    {
-    "name": "fan1",
-    "type": "number",
-	  "title": {"en":"Supply fan speed"},
-	  "min": 30,
-	  "max": 100,
-	  "step": 1,
-	  "placeholder": { "en": "In percent" }
-    },
-    {
-    "name": "fan2",
-    "type": "number",
-	  "title": {"en":"Extract fan speed"},
-	  "min": 30,
-	  "max": 100,
-	  "step": 1,
-	  "placeholder": { "en": "In percent" }
-    }
-  ]
-},
-
-{
-	"id": "change_setpoint_fan_fireplace",
-  "title": {"en": "Change setpoint fan speeds FIREPLACE" },
-  "titleFormatted": { "en": "Change setpoint fan speeds fireplace to supply [[fan1]] % and exhaust [[fan2]] %" },
-  
-  "args": [
-    {
-    "name": "fan1",
-    "type": "number",
-	  "title": {"en":"Supply fan speed"},
-	  "min": 30,
-	  "max": 100,
-	  "step": 1,
-	  "placeholder": { "en": "In percent" }
-    },
-    {
-    "name": "fan2",
-    "type": "number",
-	  "title": {"en":"Extract fan speed"},
-	  "min": 30,
-	  "max": 100,
-	  "step": 1,
-	  "placeholder": { "en": "In percent" }
     }
   ]
 }

@@ -13,6 +13,7 @@
     "eslint-config-athom": "^3.0.1"
   },
   "dependencies": {
+    "homey-log": "^2.1.0",
     "jsmodbus": "^4.0.6"
   }
 }

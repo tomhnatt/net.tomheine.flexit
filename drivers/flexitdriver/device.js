@@ -61,8 +61,8 @@ const ROOM_OPERATION_MODE = [2013, 1, 'Room operation mode', 'ROOM_OPERATION_MOD
 
 const RAPID_VENTILATION_RUNTIME = [1104, 1, 'Rapid ventilation runtime', 'RAPID_VENTILATION_RUNTIME',1,360,1,"min","my_rapid_ventilation_runtime"]; // NB står 1103 i manualen
 const FIREPLACE_VENTILATION_RUNTIME = [1106, 1, 'Fireplace ventilation runtime', 'FIREPLACE_VENTILATION_RUNTIME',0,360,0,"min","my_fireplace_ventilation_runtime"]; // NB står 1105 i manualen
-const REMAINING_TIME_OF_RAPID_VENTILATION = [1035, 2, 'Remaining time of rapid ventilation', 'REMAINING_TIME_OF_RAPID_VENTILATION',0,360,0,"min","my_remaning_time_of_rapid_ventilation"];
-const REMAINING_TIME_OF_FIREPLACE_VENTILATION = [1037, 2, 'Remaining time of fireplace ventilation', 'REMAINING_TIME_OF_FIREPLACE_VENTILATION',0,360,0,"min","my_remaning_time_of_fireplace_ventilation"];
+const REMAINING_TIME_OF_RAPID_VENTILATION = [1035, 2, 'Remaining time of rapid ventilation', 'REMAINING_TIME_OF_RAPID_VENTILATION',0,360,0,"min","my_remaining_time_of_rapid_ventilation"];
+const REMAINING_TIME_OF_FIREPLACE_VENTILATION = [1037, 2, 'Remaining time of fireplace ventilation', 'REMAINING_TIME_OF_FIREPLACE_VENTILATION',0,360,0,"min","my_remaining_time_of_fireplace_ventilation"];
 
 const SETPOINT_AWAY_SUPPLY_FAN = [1021, 2, 'Setpoint Away Supply Fan', 'SETPOINT_AWAY_SUPPLY_FAN',30,100,30,"%","fan_setpoint_supply_away"];
 const SETPOINT_AWAY_EXTRACT_FAN = [1023, 2, 'Setpoint Away Extract Fan', 'SETPOINT_AWAY_EXTRACT_FAN',30,100,30,"%","fan_setpoint_extract_away"];
@@ -252,7 +252,7 @@ class MyDevice extends Homey.Device {
       // d.log("Value of holding " + register[2] + ": " + d.registerValues[register[3]] );
     }, function (err) {
       console.error(err);
-      device.homeyLog.captureException(err.originalError || err);
+      device.homeyLog.captureException(new Error(err));
     }); 
   }
 
@@ -266,7 +266,7 @@ class MyDevice extends Homey.Device {
       // d.log("Value of input " + register[2] + ": " + d.registerValues[register[3]] );
     }, function (err) {
       console.error(err);
-      device.homeyLog.captureException(err.originalError || err);
+      device.homeyLog.captureException(new Error(err));  //TODO:  Denne forårsaker veldig mye feil på visse tidspunkt.  Virker som at noe henger, men at err ikke er en error.
     });  
   }
 

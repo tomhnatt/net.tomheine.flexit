@@ -363,8 +363,8 @@
         "fan_setpoint_extract_cooker_hood",
         "fan_setpoint_supply_fireplace",
         "fan_setpoint_extract_fireplace",
-        "my_remaning_time_of_rapid_ventilation",
-        "my_remaning_time_of_fireplace_ventilation",
+        "my_remaining_time_of_rapid_ventilation",
+        "my_remaining_time_of_fireplace_ventilation",
         "my_rapid_ventilation_runtime",
         "my_fireplace_ventilation_runtime"
       ],
@@ -720,7 +720,7 @@
       "insights": true,
       "icon": "/assets/clock.svg"
     },
-    "my_remaning_time_of_fireplace_ventilation": {
+    "my_remaining_time_of_fireplace_ventilation": {
       "type": "number",
       "title": {
         "en": "Remaining time of fireplace ventilation"
@@ -737,7 +737,7 @@
       "insights": true,
       "icon": "/assets/clock.svg"
     },
-    "my_remaning_time_of_rapid_ventilation": {
+    "my_remaining_time_of_rapid_ventilation": {
       "type": "number",
       "title": {
         "en": "Remaining time of rapid ventilation"

@@ -115,20 +115,16 @@ class MyDevice extends Homey.Device {
 
 	   client.writeMultipleRegisters(setpoint1[0], [this.fromFloat(fan1)[0], 0])
 		 .then(resp => {
-        device.log(resp);
-        device.homeyLog.captureMessage(resp, "debug");
+          device.writeDebugInfo(resp);
 		 }).catch(function() {
-        device.error(arguments);
-        device.homeyLog.captureException(arguments);
+          device.writeErrorInfo(arguments);
 		 });
 
 		 client.writeMultipleRegisters(setpoint2[0], [this.fromFloat(fan2)[0], 0])
 		 .then(resp => {
-        device.log(resp);
-        device.homeyLog.captureMessage(resp, "debug");
+      device.writeDebugInfo(resp);
 		 }).catch(function() {
-        device.error(arguments);
-        device.homeyLog.captureException(arguments);
+        device.writeErrorInfo(arguments);
 		 });
   }
 
@@ -139,11 +135,9 @@ class MyDevice extends Homey.Device {
 
 	  client.writeMultipleRegisters(mode[0], [this.fromFloat(temperature)[0], 0])
       .then(resp => {
-        console.log(resp);
-        device.homeyLog.captureMessage(resp, "debug");
+        device.writeDebugInfo(resp);
       }).catch(function() {
-        console.error(arguments);
-        device.homeyLog.captureException(arguments);
+        device.writeErrorInfo(arguments);
       });
   }
 
@@ -154,11 +148,9 @@ class MyDevice extends Homey.Device {
 
     client.writeSingleRegister(2040, 1)
       .then(resp => {
-        console.log(resp);
-        device.homeyLog.captureMessage(resp, "debug");
+        device.writeDebugInfo(resp);
       }).catch(function() {
-        console.error(arguments);
-        device.homeyLog.captureException(arguments);
+        device.writeErrorInfo(arguments);
       });
   }
 
@@ -169,27 +161,23 @@ class MyDevice extends Homey.Device {
 
     client.writeMultipleRegisters(mode[0] - 1, [0, duration]) // -1 her fordi selve verien lå i et høyere register og det ble laget i const over.
       .then(resp => {
-        console.log(resp);
-        device.homeyLog.captureMessage(resp, "debug");
+        device.writeDebugInfo(resp);
       }).catch(function() {
-        console.error(arguments);
-        device.homeyLog.captureException(arguments);
+        device.writeErrorInfo(arguments);
       });
   }
 
   async triggerActionFlexit(action) {
 	   // TODO: Reconnect
 
-	   this.log(`Trigger: ${action[2]}`);
+	   this.writeDebugInfo(`Trigger: ${action[2]}`);
 	   const device = this;
 
     client.writeSingleRegister(action[0], action[1])
       .then(resp => {
-        console.log(resp);
-        device.homeyLog.captureMessage(resp, "debug");
+        device.writeDebugInfo(resp);
       }).catch(function() {
-        console.error(arguments);
-        device.homeyLog.captureException(arguments);
+        device.writeErrorInfo(arguments);
       });
 
      
@@ -203,8 +191,20 @@ class MyDevice extends Homey.Device {
       await this.triggerActionFlexit(TRIGGER_TEMPORARY_FIREPLACE); //TODO:  This has to complete betfore next step in triggerVentilationModeActionFlexit
   }
 
+  async resetFilterReplacement() {
+
+    const device = this;
+
+     client.writeMultipleRegisters(OPERATING_TIME_FILTER[0],[0,0])
+      .then(resp => {
+        device.writeDebugInfo(resp);
+      }).catch(function(err) {
+       device.writeErrorInfo(err);
+      });
+  }
+
   async triggerVentilationModeActionFlexit(mode) {
-	   this.log(`Trigger Venitlation Mode: ${mode}`);
+    this.writeDebugInfo(`Trigger Venitlation Mode: ${mode}`);
 
      //TODO:  Include this: device.setVentilationRuntime(RAPID_VENTILATION_RUNTIME, args.duration);?
 
@@ -233,7 +233,7 @@ class MyDevice extends Homey.Device {
 		   await this.triggerActionFlexit(TRIGGER_HIGH);
        this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_HIGH; 
 	   } else if (mode == 'cooker_hood') {
-        console.log("Ventilation modde cooker hood not supported. Starting Temprorary Fireplace");
+        this.writeDebugInfo("Ventilation modde cooker hood not supported. Starting Temprorary Fireplace");
         await this.triggerActionFlexit(TRIGGER_TEMPORARY_FIREPLACE);
         this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_TEMPORARY_FIREPLACE; 
 		   // TODO:  Find a way to implement...
@@ -251,8 +251,7 @@ class MyDevice extends Homey.Device {
       device.registerValues[register[3]] = prosessing(resp.response.body._valuesAsArray);
       // d.log("Value of holding " + register[2] + ": " + d.registerValues[register[3]] );
     }, function (err) {
-      console.error(err);
-      device.homeyLog.captureException(new Error(err));
+     device.writeErrorInfo(err);
     }); 
   }
 
@@ -265,8 +264,7 @@ class MyDevice extends Homey.Device {
       device.registerValues[register[3]] = prosessing(resp.response.body._valuesAsArray);
       // d.log("Value of input " + register[2] + ": " + d.registerValues[register[3]] );
     }, function (err) {
-      console.error(err);
-      device.homeyLog.captureException(new Error(err));  //TODO:  Denne forårsaker veldig mye feil på visse tidspunkt.  Virker som at noe henger, men at err ikke er en error.
+      device.writeErrorInfo(err);
     });  
   }
 
@@ -414,12 +412,25 @@ propertyCapability(property) {
     this.updateCapabilitesFromRegister();
   }
 
+  async writeDebugInfo(message){
+    console.log(message)
+    this.homeyLog.captureMessage(message);
+  }
+
+  async writeErrorInfo(err){
+    console.error("Client error: ", err);
+    if(typeof err == "Error")
+    {
+      this.homeyLog.captureException (err);
+    }
+    else
+    {
+      this.homeyLog.captureMessage (err.toString());
+    }
+  }
+
 
   async onInit() {
-    this.log('MyDevice has been initialized');
-
-    this.homeyLog = new Log({ homey: this.homey });
-    this.homeyLog.captureMessage("MyDevice has been initialized", "debug");
 
     await this.setInitialValues();
 
@@ -427,28 +438,37 @@ propertyCapability(property) {
 
     const device = this;
 
+    this.homeyLog = new Log({ homey: this.homey });
+    device.writeDebugInfo("Flexit-app has been initialized");
+
+    
+    
+
     const settings = device.getSettings();
 
     const options = {
       host:  device.getStoreValue("modbusTCP_ip"), 
       port: device.getStoreValue("modbusTCP_port")
     };
-    // var closedOnPurpose = false;
+
+    this.homeyLog = this.homeyLog.setExtra(options);
 
     socket.on('connect', () => {
-      device.log('Connected');
+      this.writeDebugInfo("Connected to Flexit");
       // device.setComfortModeFlexit();
       device.updateFlexitValues = device.updateFlexitValues.bind(device);
       device.updateFlexitValues();
       setInterval(device.updateFlexitValues.bind(device), settings.modbusTCP_updateInterval);
     });
 
-    socket.on('close', () => {
-      device.log('Client closed.Reconnecting');
-      // if (!device.closedOnPurpose) {
+    socket.on('close', function() {
+      device.writeDebugInfo("Connecection to Flexit is Closed. Reconnection");
       socket.reconnect();
-      // }
     });
+
+    socket.on('error', function (err) {
+     device.writeErrorInfo(err);
+    })
 
     socket.connect(options);
 
@@ -456,37 +476,47 @@ propertyCapability(property) {
       await this.triggerVentilationModeActionFlexit(value);
     });
 
+ 
+    //Maintanance Actions
+    this.registerCapabilityListener('button.reset_filter', async () => {
+            
+      device.writeDebugInfo(`Flow: Reset filter replacement`);
+	   device.resetFilterReplacement();
+      return;
+    });
+  
     //Flows
+
 
     const changeModeAction = this.homey.flow.getActionCard('change_mode');
     changeModeAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: change mode: with mode${args.ventilation_mode}`);
+      device.writeDebugInfo(`Flow: change mode: with mode${args.ventilation_mode}`);
 	   device.triggerVentilationModeActionFlexit(args.ventilation_mode);
     });
 
     const startTemporaryFireplaceAction = this.homey.flow.getActionCard('start_temporary_fireplace');
     startTemporaryFireplaceAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: temporary fireplace: with duration${args.duration}`);
+      device.writeDebugInfo(`Flow: temporary fireplace: with duration${args.duration}`);
 	   device.setVentilationRuntime(FIREPLACE_VENTILATION_RUNTIME, args.duration);
 	   device.triggerActionFlexit(TRIGGER_TEMPORARY_FIREPLACE);
     });
 
     const startTemporaryHighAction = this.homey.flow.getActionCard('start_temporary_high');
     startTemporaryHighAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: temporary high: with duration${args.duration}`);
+      device.writeDebugInfo(`Flow: temporary high: with duration${args.duration}`);
 	   device.setVentilationRuntime(RAPID_VENTILATION_RUNTIME, args.duration);
 	   device.triggerActionFlexit(TRIGGER_TEMPORARY_HIGH);
     });
 
     const changeSetpointHomeAction = this.homey.flow.getActionCard('change_setpoint_home');
     changeSetpointHomeAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: setpoint home changed${args.temperature}`);
+      device.writeDebugInfo(`Flow: setpoint home changed${args.temperature}`);
 	   device.changeSetpointTemperatureFlexit(SETPOINT_HOME_TEMPERATURE, args.temperature);
     });
 
     const changeSetpointAwayAction = this.homey.flow.getActionCard('change_setpoint_away');
     changeSetpointAwayAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: setpoint away changed${args.temperature}`);
+      device.writeDebugInfo(`Flow: setpoint away changed${args.temperature}`);
 	   device.changeSetpointTemperatureFlexit(SETPOINT_AWAY_TEMPERATURE, args.temperature);
     });
 
@@ -494,7 +524,7 @@ propertyCapability(property) {
 
     const changeSetpointFansAction = this.homey.flow.getActionCard('change_setpoint_fans');
     changeSetpointFansAction.registerRunListener(async (args, state) => {
-      device.log(`Flow: setpoint fan speeds changed for mode ${args.mode} Supply:${args.fan1} Extract:${args.fan2}`);
+      device.writeDebugInfo(`Flow: setpoint fan speeds changed for mode ${args.mode} Supply:${args.fan1} Extract:${args.fan2}`);
       if(args.mode == "away")
       device.changeSetpointFanFlexit(SETPOINT_AWAY_SUPPLY_FAN, SETPOINT_AWAY_EXTRACT_FAN, args.fan1, args.fan2);
       else if(args.mode == "home")

@@ -366,31 +366,43 @@
         "my_remaining_time_of_rapid_ventilation",
         "my_remaining_time_of_fireplace_ventilation",
         "my_rapid_ventilation_runtime",
-        "my_fireplace_ventilation_runtime"
+        "my_fireplace_ventilation_runtime",
+        "button.reset_filter"
       ],
-      "platforms": [
-        "local"
-      ],
-      "connectivity": [
-        "lan"
-      ],
-      "pair": [
-        {
-          "id": "list_my_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_my_devices"
+      "capabilitiesOptions": {
+        "button.reset_filter": {
+          "maintenanceAction": true,
+          "title": {
+            "en": "Reset filter"
+          },
+          "desc": {
+            "en": "Press when changed filter."
           }
         },
-        {
-          "id": "add_my_devices",
-          "template": "add_devices"
+        "platforms": [
+          "local"
+        ],
+        "connectivity": [
+          "lan"
+        ],
+        "pair": [
+          {
+            "id": "list_my_devices",
+            "template": "list_devices",
+            "navigation": {
+              "next": "add_my_devices"
+            }
+          },
+          {
+            "id": "add_my_devices",
+            "template": "add_devices"
+          }
+        ],
+        "images": {
+          "small": "/drivers/flexitdriver/assets/images/small.png",
+          "large": "/drivers/flexitdriver/assets/images/large.png",
+          "xlarge": "/drivers/flexitdriver/assets/images/xlarge.png"
         }
-      ],
-      "images": {
-        "small": "/drivers/flexitdriver/assets/images/small.png",
-        "large": "/drivers/flexitdriver/assets/images/large.png",
-        "xlarge": "/drivers/flexitdriver/assets/images/xlarge.png"
       },
       "id": "flexitdriver",
       "settings": [

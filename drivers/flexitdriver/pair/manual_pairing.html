@@ -1,0 +1,46 @@
+<form id="info" action="">
+(IP and port of modbus adaptor)<br>
+<label for="adress">IP-adress:</label><input type="text" id="adress" value="192.168.0.95"></input><br><br>
+<label for="port">Port:</label><input type="text" id="port" value="8234"></input><br><br>
+</form>
+<br>
+
+<button onclick="pair()">Add</button>
+
+<script type="application/javascript">
+
+    //Based on:  https://apps.developer.homey.app/advanced/custom-views/custom-pairing-views#create-a-device
+
+    Homey.setTitle("Add Flexit Nordic S4");
+
+    function pair(){
+
+
+        Homey.createDevice({
+    // The name of the device that will be shown to the user
+    name: "Flexit Nordic S4",
+
+    // The data object is required and should contain only unique properties for the device.
+    // So a MAC address is good, but an IP address is bad (can change over time)
+    data: {
+      id: "flexit_s4",
+    },
+
+    // Optional: The store is dynamic and persistent storage for your device
+    store: {
+            modbusTCP_ip: document.getElementById("adress").value,//"192.168.0.95", //TODO: Aquire during installation
+            modbusTCP_port: document.getElementById("port").value//8234 //TODO: Aquire during installation
+          },
+          setting: {
+            modbusTCP_updateInterval: 20000,
+          }
+  })
+    .then(function (result) {
+      Homey.done();
+    })
+    .catch(function (error) {
+      Homey.alert(error);
+    });
+}
+
+</script>

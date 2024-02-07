@@ -378,31 +378,23 @@
           "desc": {
             "en": "Press when changed filter."
           }
-        },
-        "platforms": [
-          "local"
-        ],
-        "connectivity": [
-          "lan"
-        ],
-        "pair": [
-          {
-            "id": "list_my_devices",
-            "template": "list_devices",
-            "navigation": {
-              "next": "add_my_devices"
-            }
-          },
-          {
-            "id": "add_my_devices",
-            "template": "add_devices"
-          }
-        ],
-        "images": {
-          "small": "/drivers/flexitdriver/assets/images/small.png",
-          "large": "/drivers/flexitdriver/assets/images/large.png",
-          "xlarge": "/drivers/flexitdriver/assets/images/xlarge.png"
         }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "pair": [
+        {
+          "id": "manual_pairing"
+        }
+      ],
+      "images": {
+        "small": "/drivers/flexitdriver/assets/images/small.png",
+        "large": "/drivers/flexitdriver/assets/images/large.png",
+        "xlarge": "/drivers/flexitdriver/assets/images/xlarge.png"
       },
       "id": "flexitdriver",
       "settings": [

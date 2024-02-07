@@ -19,52 +19,40 @@ class MyDriver extends Homey.Driver {
    */
   async onPairListDevices() {
   
-	//Fra https://apps.developer.homey.app/the-basics/devices/pairing
-  return [{
-    name: "Flexit Nordic S4 ny_2",
-    data: {
-      id: "flexit_s4_new_2",
-    },
-    store: {
-      modbusTCP_ip: "192.168.0.95", //TODO: Aquire during installation
-      modbusTCP_port: 8234 //TODO: Aquire during installation
-    },
-    setting: {
-      modbusTCP_updateInterval: 20000,
-    }
-  }];
+	//From  https://apps.developer.homey.app/the-basics/devices/pairing
+    //Now removed...
  }
 
 	
-	/*return {
-  // The name of the device that will be displayed
-  name: "Flexit Nordic S4 aggregat",
-
-  // The data object is required and should be unique for the device.
-  // So a device's MAC address would be good, but an IP address would
-  // be bad since it can change over time.
-  data: {
-    id: "flexit_s4_agh2"
-  },*/
-
 
   
     async onPair(session) {
-    session.setHandler('list_devices', async () => {
-      return [{
-        name: "Flexit Nordic S4 ny3",
-        data: {
-          id: "flexit_s4_new_3",
-        },
-        store: {
-          modbusTCP_ip: "192.168.0.95", //TODO: Aquire during installation
-          modbusTCP_port: 8234 //TODO: Aquire during installation
-        },
-        setting: {
-          modbusTCP_updateInterval: 20000,
-        }
-      }];
-    });
+    //From https://apps.developer.homey.app/advanced/custom-views/custom-pairing-views#back-end-api
+    //now removed and instead directly executed in manual_pairing.html
+
+    /*session.setHandler('manual_pairing', async function (data) {
+      try {
+        console.log('manual_pairing: ', data.flexit_adress,":",data.flexit_port);
+        //await session.done();
+        return [{
+          name: "Flexit Nordic S4",
+          data: {
+            id: "flexit_s4_new_4",
+          },
+          store: {
+            modbusTCP_ip: data.flexit_adress,//"192.168.0.95", //TODO: Aquire during installation
+            modbusTCP_port: data.flexit_port//8234 //TODO: Aquire during installation
+          },
+          setting: {
+            modbusTCP_updateInterval: 20000,
+          }
+        }];
+      } catch (e) {
+        console.log(e);
+        throw new Error(this.homey.__('pair.error'));
+      }
+    });*/
+
   }
   
 

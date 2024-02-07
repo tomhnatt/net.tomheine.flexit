@@ -251,7 +251,7 @@ class MyDevice extends Homey.Device {
       device.registerValues[register[3]] = prosessing(resp.response.body._valuesAsArray);
       // d.log("Value of holding " + register[2] + ": " + d.registerValues[register[3]] );
     }, function (err) {
-     device.writeErrorInfo(err);
+     device.writeErrorInfo(err+ "Read holding: " + register[2]);
     }); 
   }
 
@@ -413,12 +413,14 @@ propertyCapability(property) {
   }
 
   async writeDebugInfo(message){
-    console.log(message)
+    var err = new Error();
+    console.log(message + "\n@"+ err.stack);
     this.homeyLog.captureMessage(message);
   }
 
   async writeErrorInfo(err){
-    console.error("Client error: ", err);
+    var e = new Error();
+    console.error("Client error: ", err +  e.stack);
     if(typeof err == "Error")
     {
       this.homeyLog.captureException (err);

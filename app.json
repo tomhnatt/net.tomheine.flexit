@@ -4,8 +4,12 @@
   "version": "2.1.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
+  "brandColor": "#2866d1",
   "platforms": [
     "local"
+  ],
+  "connectivity": [
+    "lan"
   ],
   "name": {
     "en": "Flexit Nordic S4"

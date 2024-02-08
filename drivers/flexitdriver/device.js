@@ -415,7 +415,7 @@ propertyCapability(property) {
   async writeDebugInfo(message){
     var err = new Error();
     console.log(message + "\n@"+ err.stack);
-    this.homeyLog.captureMessage(message);
+    //TODO: this.homeyLog.captureMessage(message);
   }
 
   async writeErrorInfo(err){
@@ -423,11 +423,11 @@ propertyCapability(property) {
     console.error("Client error: ", err +  e.stack);
     if(typeof err == "Error")
     {
-      this.homeyLog.captureException (err);
+      //TODO: this.homeyLog.captureException (err);
     }
     else
     {
-      this.homeyLog.captureMessage (err.toString());
+      //TODO: this.homeyLog.captureMessage (err.toString());
     }
   }
 
@@ -440,7 +440,7 @@ propertyCapability(property) {
 
     const device = this;
 
-    this.homeyLog = new Log({ homey: this.homey });
+   // this.homeyLog = new Log({ homey: this.homey });
     device.writeDebugInfo("Flexit-app has been initialized");
 
     
@@ -453,7 +453,7 @@ propertyCapability(property) {
       port: device.getStoreValue("modbusTCP_port")
     };
 
-    this.homeyLog = this.homeyLog.setExtra(options);
+    //TODO: this.homeyLog = this.homeyLog.setExtra(options);
 
     socket.on('connect', () => {
       this.writeDebugInfo("Connected to Flexit");

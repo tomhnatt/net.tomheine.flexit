@@ -219,7 +219,7 @@ class MyDevice extends Homey.Device {
 	   } else if (mode == 'stop') {
       await this.cancelTemporary();
 		   await this.triggerActionFlexit(TRIGGER_STOP);
-       this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_STOP; 
+       this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_OFF; 
 	   } else if (mode == 'home') {
       await this.cancelTemporary();
 		   await this.triggerActionFlexit(TRIGGER_HOME);
@@ -227,7 +227,7 @@ class MyDevice extends Homey.Device {
 	   } else if (mode == 'away') {
 		  await this.cancelTemporary();
 		   await this.triggerActionFlexit(TRIGGER_AWAY);
-       this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_TEMPORARY_AWAY; 
+       this.registerValues[this.propertyKey(VENTILATION_MODE)] = VENTILATION_MODE_AWAY; 
 	   } else if (mode == 'high') {
 		  await this.cancelTemporary();
 		   await this.triggerActionFlexit(TRIGGER_HIGH);

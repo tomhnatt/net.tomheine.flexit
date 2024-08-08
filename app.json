@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "net.tomheine.flexit",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#2866d1",
@@ -345,17 +345,17 @@
       "capabilities": [
         "my_supply_air_fan_speed",
         "my_exhaust_air_fan_speed",
-        "my_supply_air_temperature",
-        "my_exhaust_air_temperature",
-        "my_extract_air_temperature",
-        "my_outside_air_temperature",
-        "my_room_temperature",
+        "measure_supply_air_temperature",
+        "measure_exhaust_air_temperature",
+        "measure_extract_air_temperature",
+        "measure_outside_air_temperature",
+        "measure_room_temperature",
         "my_ventilation_mode",
         "my_setpoint_home_temperature",
         "my_setpoint_away_temperature",
-        "my_supply_air_fan_speed_feedback",
-        "my_exhaust_air_fan_speed_feedback",
-        "my_rotary_heat_exchanger_speed",
+        "measure_supply_air_fan_speed_feedback",
+        "measure_exhaust_air_fan_speed_feedback",
+        "measure_rotary_heat_exchanger_speed",
         "my_filter_replacement",
         "fan_setpoint_supply_away",
         "fan_setpoint_extract_away",
@@ -367,8 +367,8 @@
         "fan_setpoint_extract_cooker_hood",
         "fan_setpoint_supply_fireplace",
         "fan_setpoint_extract_fireplace",
-        "my_remaining_time_of_rapid_ventilation",
-        "my_remaining_time_of_fireplace_ventilation",
+        "measure_remaining_time_of_rapid_ventilation",
+        "measure_remaining_time_of_fireplace_ventilation",
         "my_rapid_ventilation_runtime",
         "my_fireplace_ventilation_runtime",
         "button.reset_filter"
@@ -589,24 +589,7 @@
       "insights": true,
       "icon": "/assets/supply.svg"
     },
-    "my_exhaust_air_fan_speed": {
-      "type": "number",
-      "title": {
-        "en": "Exhaust air fan speed"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": "%"
-      },
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "insights": true,
-      "icon": "/assets/exhaust.svg"
-    },
-    "my_exhaust_air_fan_speed_feedback": {
+    "measure_exhaust_air_fan_speed_feedback": {
       "type": "number",
       "title": {
         "en": "Exhaust air fan speed feedback"
@@ -623,7 +606,7 @@
       "insights": true,
       "icon": "/assets/exhaust.svg"
     },
-    "my_exhaust_air_temperature": {
+    "measure_exhaust_air_temperature": {
       "type": "number",
       "title": {
         "en": "Exhaust air temperature"
@@ -641,7 +624,7 @@
       "insights": true,
       "icon": "/assets/exhaust.svg"
     },
-    "my_extract_air_temperature": {
+    "measure_extract_air_temperature": {
       "type": "number",
       "title": {
         "en": "Extract air temperature"
@@ -658,6 +641,144 @@
       "decimals": 1,
       "insights": true,
       "icon": "/assets/extract.svg"
+    },
+    "measure_outside_air_temperature": {
+      "type": "number",
+      "title": {
+        "en": "Outside air temperature"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "°C"
+      },
+      "min": -50,
+      "max": 80,
+      "step": 0.1,
+      "decimals": 1,
+      "insights": true,
+      "icon": "/assets/outside.svg"
+    },
+    "measure_remaining_time_of_fireplace_ventilation": {
+      "type": "number",
+      "title": {
+        "en": "Remaining time of fireplace ventilation"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "min"
+      },
+      "min": 0,
+      "max": 360,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/clock.svg"
+    },
+    "measure_remaining_time_of_rapid_ventilation": {
+      "type": "number",
+      "title": {
+        "en": "Remaining time of rapid ventilation"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "min"
+      },
+      "min": 0,
+      "max": 360,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/clock.svg"
+    },
+    "measure_room_temperature": {
+      "type": "number",
+      "title": {
+        "en": "Room temperature"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "°C"
+      },
+      "min": -50,
+      "max": 80,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/room.svg"
+    },
+    "measure_rotary_heat_exchanger_speed": {
+      "type": "number",
+      "title": {
+        "en": "Rotary heat exchanger speed"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "%"
+      },
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/icon.svg"
+    },
+    "measure_supply_air_fan_speed_feedback": {
+      "type": "number",
+      "title": {
+        "en": "Supply air fan speed feedback"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "rpm"
+      },
+      "min": 0,
+      "max": 18000,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/supply.svg"
+    },
+    "measure_supply_air_temperature": {
+      "type": "number",
+      "title": {
+        "en": "Supply air temperature"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "°C"
+      },
+      "min": -50,
+      "max": 80,
+      "step": 0.1,
+      "decimals": 1,
+      "insights": true,
+      "icon": "/assets/supply.svg"
+    },
+    "my_exhaust_air_fan_speed": {
+      "type": "number",
+      "title": {
+        "en": "Exhaust air fan speed"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "%"
+      },
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "insights": true,
+      "icon": "/assets/exhaust.svg"
     },
     "my_filter_replacement": {
       "type": "number",
@@ -693,24 +814,6 @@
       "insights": true,
       "icon": "/assets/clock.svg"
     },
-    "my_outside_air_temperature": {
-      "type": "number",
-      "title": {
-        "en": "Outside air temperature"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": "°C"
-      },
-      "min": -50,
-      "max": 80,
-      "step": 0.1,
-      "decimals": 1,
-      "insights": true,
-      "icon": "/assets/outside.svg"
-    },
     "my_rapid_ventilation_runtime": {
       "type": "number",
       "title": {
@@ -727,74 +830,6 @@
       "step": 1,
       "insights": true,
       "icon": "/assets/clock.svg"
-    },
-    "my_remaining_time_of_fireplace_ventilation": {
-      "type": "number",
-      "title": {
-        "en": "Remaining time of fireplace ventilation"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": "min"
-      },
-      "min": 0,
-      "max": 360,
-      "step": 1,
-      "insights": true,
-      "icon": "/assets/clock.svg"
-    },
-    "my_remaining_time_of_rapid_ventilation": {
-      "type": "number",
-      "title": {
-        "en": "Remaining time of rapid ventilation"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": "min"
-      },
-      "min": 0,
-      "max": 360,
-      "step": 1,
-      "insights": true,
-      "icon": "/assets/clock.svg"
-    },
-    "my_room_temperature": {
-      "type": "number",
-      "title": {
-        "en": "Room temperature"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": "°C"
-      },
-      "min": -50,
-      "max": 80,
-      "step": 1,
-      "insights": true,
-      "icon": "/assets/room.svg"
-    },
-    "my_rotary_heat_exchanger_speed": {
-      "type": "number",
-      "title": {
-        "en": "Rotary heat exchanger speed"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": "%"
-      },
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "insights": true,
-      "icon": "/assets/icon.svg"
     },
     "my_setpoint_away_temperature": {
       "type": "number",
@@ -846,41 +881,6 @@
       "min": 0,
       "max": 100,
       "step": 1,
-      "insights": true,
-      "icon": "/assets/supply.svg"
-    },
-    "my_supply_air_fan_speed_feedback": {
-      "type": "number",
-      "title": {
-        "en": "Supply air fan speed feedback"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": "rpm"
-      },
-      "min": 0,
-      "max": 18000,
-      "step": 1,
-      "insights": true,
-      "icon": "/assets/supply.svg"
-    },
-    "my_supply_air_temperature": {
-      "type": "number",
-      "title": {
-        "en": "Supply air temperature"
-      },
-      "uiComponent": "sensor",
-      "getable": true,
-      "setable": false,
-      "units": {
-        "en": "°C"
-      },
-      "min": -50,
-      "max": 80,
-      "step": 0.1,
-      "decimals": 1,
       "insights": true,
       "icon": "/assets/supply.svg"
     },

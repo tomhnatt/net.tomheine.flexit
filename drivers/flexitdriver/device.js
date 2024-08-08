@@ -36,16 +36,16 @@ const TRIGGER_HIGH = [2013, 4, 'Trigger high ventilation', 'TRIGGER_HIGH'];
 //modbus-register, modbus-size, title, key, min, maks, default, unit, capability
 const SUPPLY_AIR_FAN_SPEED = [5, 2, 'Supply air fan speed', 'SUPPLY_AIR_FAN_SPEED',0,100,0,"%","my_supply_air_fan_speed"];
 const EXHAUST_AIR_FAN_SPEED = [9, 2, 'Exhaust air fan speed', 'EXHAUST_AIR_FAN_SPEED',0,100,0,"%","my_exhaust_air_fan_speed"];
-const SUPPLY_AIR_FAN_SPEED_FEEDBACK = [21, 2, 'Supply air fan speed', 'SUPPLY_AIR_FAN_SPEED_FEEDBACK',0,18000,0,"rpm","my_supply_air_fan_speed_feedback"];
-const EXHAUST_AIR_FAN_SPEED_FEEDBACK = [25, 2, 'Exhaust air fan speed', 'EXHAUST_AIR_FAN_SPEED_FEEDBACK',0,18000,0,"rpm","my_exhaust_air_fan_speed_feedback"];
+const SUPPLY_AIR_FAN_SPEED_FEEDBACK = [21, 2, 'Supply air fan speed', 'SUPPLY_AIR_FAN_SPEED_FEEDBACK',0,18000,0,"rpm","measure_supply_air_fan_speed_feedback"];
+const EXHAUST_AIR_FAN_SPEED_FEEDBACK = [25, 2, 'Exhaust air fan speed', 'EXHAUST_AIR_FAN_SPEED_FEEDBACK',0,18000,0,"rpm","measure_exhaust_air_fan_speed_feedback"];
 
-const ROTARY_HEAT_EXCHANGER_SPEED = [1, 2, 'Rotary heat exchange speed', 'ROTARY_HEAT_EXCHANGER_SPEED',0,100,0,"%","my_rotary_heat_exchanger_speed"];
+const ROTARY_HEAT_EXCHANGER_SPEED = [1, 2, 'Rotary heat exchange speed', 'ROTARY_HEAT_EXCHANGER_SPEED',0,100,0,"%","measure_rotary_heat_exchanger_speed"];
 
-const SUPPLY_AIR_TEMPERATURE = [5, 2, 'Supply air temperature', 'SUPPLY_AIR_TEMPERATURE',-50,80,0.0,"%","my_supply_air_temperature"];
-const EXHAUST_AIR_TEMPERATURE = [13, 2, 'Exhaust air temperature', 'EXHAUST_AIR_TEMPERATURE',-50,80,0.0,"%","my_exhaust_air_temperature"];
-const EXTRACT_AIR_TEMPERATURE = [9, 2, 'Extract air temperature', 'EXTRACT_AIR_TEMPERATURE',-50,80,0.0,"%","my_extract_air_temperature"];
-const OUTSIDE_AIR_TEMPERATURE = [1, 2, 'Outside air temperature', 'OUTSIDE_AIR_TEMPERATURE',-50,80,0.0,"%","my_outside_air_temperature"];
-const ROOM_TEMPERATURE = [17, 2, 'Room temperature', 'ROOM_TEMPERATURE',0,50,0.0,"C","my_room_temperature"];
+const SUPPLY_AIR_TEMPERATURE = [5, 2, 'Supply air temperature', 'SUPPLY_AIR_TEMPERATURE',-50,80,0.0,"%","measure_supply_air_temperature"];
+const EXHAUST_AIR_TEMPERATURE = [13, 2, 'Exhaust air temperature', 'EXHAUST_AIR_TEMPERATURE',-50,80,0.0,"%","measure_exhaust_air_temperature"];
+const EXTRACT_AIR_TEMPERATURE = [9, 2, 'Extract air temperature', 'EXTRACT_AIR_TEMPERATURE',-50,80,0.0,"%","measure_extract_air_temperature"];
+const OUTSIDE_AIR_TEMPERATURE = [1, 2, 'Outside air temperature', 'OUTSIDE_AIR_TEMPERATURE',-50,80,0.0,"%","measure_outside_air_temperature"];
+const ROOM_TEMPERATURE = [17, 2, 'Room temperature', 'ROOM_TEMPERATURE',0,50,0.0,"C","measure_room_temperature"];
 
 const SETPOINT_HOME_TEMPERATURE = [1155, 2, 'Setpoint home temperature', 'SETPOINT_HOME_TEMPERATURE', 10, 30, 10.0,"C","my_setpoint_home_temperature"];
 const SETPOINT_AWAY_TEMPERATURE = [1163, 2, 'Setpoint away temperature', 'SETPOINT_AWAY_TEMPERATURE', 10, 30, 10.0,"C","my_setpoint_away_temperature"];
@@ -61,8 +61,8 @@ const ROOM_OPERATION_MODE = [2013, 1, 'Room operation mode', 'ROOM_OPERATION_MOD
 
 const RAPID_VENTILATION_RUNTIME = [1104, 1, 'Rapid ventilation runtime', 'RAPID_VENTILATION_RUNTIME',1,360,1,"min","my_rapid_ventilation_runtime"]; // NB står 1103 i manualen
 const FIREPLACE_VENTILATION_RUNTIME = [1106, 1, 'Fireplace ventilation runtime', 'FIREPLACE_VENTILATION_RUNTIME',0,360,0,"min","my_fireplace_ventilation_runtime"]; // NB står 1105 i manualen
-const REMAINING_TIME_OF_RAPID_VENTILATION = [1035, 2, 'Remaining time of rapid ventilation', 'REMAINING_TIME_OF_RAPID_VENTILATION',0,360,0,"min","my_remaining_time_of_rapid_ventilation"];
-const REMAINING_TIME_OF_FIREPLACE_VENTILATION = [1037, 2, 'Remaining time of fireplace ventilation', 'REMAINING_TIME_OF_FIREPLACE_VENTILATION',0,360,0,"min","my_remaining_time_of_fireplace_ventilation"];
+const REMAINING_TIME_OF_RAPID_VENTILATION = [1035, 2, 'Remaining time of rapid ventilation', 'REMAINING_TIME_OF_RAPID_VENTILATION',0,360,0,"min","measure_remaining_time_of_rapid_ventilation"];
+const REMAINING_TIME_OF_FIREPLACE_VENTILATION = [1037, 2, 'Remaining time of fireplace ventilation', 'REMAINING_TIME_OF_FIREPLACE_VENTILATION',0,360,0,"min","measure_remaining_time_of_fireplace_ventilation"];
 
 const SETPOINT_AWAY_SUPPLY_FAN = [1021, 2, 'Setpoint Away Supply Fan', 'SETPOINT_AWAY_SUPPLY_FAN',30,100,30,"%","fan_setpoint_supply_away"];
 const SETPOINT_AWAY_EXTRACT_FAN = [1023, 2, 'Setpoint Away Extract Fan', 'SETPOINT_AWAY_EXTRACT_FAN',30,100,30,"%","fan_setpoint_extract_away"];

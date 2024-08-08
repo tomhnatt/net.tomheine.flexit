@@ -6,4 +6,4 @@ Se https://www.tomheine.net/flexit-nordic-s4-og-homey/ for mer forklaring av sel
 
 Updated:  Flexit Nordic S3 should also work (identified in app as S4, but similiar modbus-communication)
 
-
+NB! Some updates will break flows/insights.
